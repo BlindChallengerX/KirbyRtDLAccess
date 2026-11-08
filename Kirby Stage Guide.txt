@@ -1,0 +1,605 @@
+KIRBY'S RETURN TO DREAM LAND - STAGE GUIDE
+For Kirby Access. Plain text, written for screen readers.
+
+You don't need to read this guide to play, and it spoils the stages: where
+the keys, switches, Energy Spheres and Super Ability rifts are, and how to
+beat each boss. It can be helpful if you find yourself getting stuck, or
+wondering what you should be looking for. Each stage has its own heading,
+so you can read only the part you need.
+
+Facts gathered from WiKirby stage pages, rewritten and condensed. Wii
+version (the one in your Kirby Wii Recomp).
+
+HOW TO USE THIS FILE
+Each level has its own heading line starting with LEVEL. Each stage starts with STAGE.
+Energy Spheres are marked with the word SPHERE so you can search for it.
+Bosses are marked with the word BOSS.
+
+=====================================================================
+GENERAL TIPS
+=====================================================================
+
+Energy Spheres: 120 in total. They are the gears from Magolor's ship. You do not need them
+to finish the story, only for 100 percent and for unlocking extras on the Lor Starcutter.
+Standing in front of a stage door on the level map tells you how many spheres the stage
+has and which ones you already got.
+
+Sphere Doomers: almost every Super Ability (Ultra Sword, Monster Flame, Flare Beam, Snow Bowl,
+Grand Hammer) is used to smash one big special object at the end of its section. That opens
+a rift to Another Dimension. Inside, a wall chases you, then you fight a Sphere Doomer.
+Beating a Sphere Doomer always gives TWO spheres. If you miss a rift, the two spheres are gone
+until you replay the stage.
+
+Super Inhale: shake the remote (in the recomp with your pad, this is the trigger).
+Needed for big Super Inhale blocks and groups of enemies.
+
+Keys: if you drop a key into a pit, or carry it too long through danger, it can be lost.
+Key Dee races: a Key Dee runs off with a key; catch it before it jumps into a pit.
+
+Round-trip doors: small side doors that lead into a challenge room and back out to the same spot.
+Many spheres are inside one.
+
+Lor Starcutter unlocks by sphere count:
+  7 spheres: Sword Challenge
+  15: Ninja Dojo sub-game
+  20: Copy Ability Room 1 (Cutter, Leaf, Needle, Fire, Sword)
+  25: Whip Challenge
+  30: Scope Shot sub-game
+  35: Hi-Jump Challenge
+  40: Copy Ability Room 2 (Stone, Parasol, Whip, Beam, Spark)
+  50: Bomb Challenge
+  60: Copy Ability Room 3 (Spear, Bomb, Tornado, Hi-Jump, Water)
+  70: Water Challenge
+  80: Copy Ability Room 4 (Ninja, Wing, Fighter, Hammer, Ice)
+  90: Wing Challenge
+  120: Item Challenge
+
+Sphere totals per level:
+  Cookie Country 13, Raisin Ruins 16, Onion Ocean 16, White Wafers 19,
+  Nutty Noon 20, Egg Engines 21, Dangerous Dinner 15. Total 120.
+
+=====================================================================
+LEVEL 1: COOKIE COUNTRY (13 spheres)
+=====================================================================
+
+STAGE 1-1 (3 spheres). Super Ability: Ultra Sword. Tutorial stage.
+Area 1, grassland: easy straight path. Blade Knight gives Sword, Sir Kibble gives Cutter.
+  Cave door at the end.
+Area 2, cave: narrow winding tunnel with Hot Head and Cappy. Find the key and carry it to the
+  locked gate.
+  SPHERE 1: behind the key gate, right on the main path. You cannot really miss it.
+  A 1-Up sits behind a Super Inhale block. Climb up to the door out.
+Area 3, crumbling hillside: a Super Blade Knight appears from a portal. Inhale it for Ultra
+  Sword. Swing it to cut through big chunks of hill. Destroy the large mound at the end; a
+  rift opens.
+Area 4, rift: the rift wall comes from the left, run right. Dash over gaps. Super Inhale the
+  blocks before the door. Choose Fire or Sword essence.
+  SPHERE 2 and 3: beat the Sphere Doomer. A Maxim Tomato follows. Leave the rift, goal is up ahead.
+
+STAGE 1-2 (3 spheres). Mid-boss: Gigant Edge.
+Area 1: climb the ladder to a long wooden bridge. Leafans give Leaf. Warp Star at the end.
+Area 2: wooden structure in the woods. Cutter essence to the right over a pit. Rope platforms;
+  cutting the ropes drops them.
+Area 3, Crackler section: pick up the Crackler (a fire-blowing gadget). Break the metal blocks
+  around a switch. The switch raises a bridge over a bottomless pit. Note: you cannot float
+  while carrying the Crackler.
+  SPHERE 1: near the end of the Crackler area, blast the metal blocks in the ceiling.
+Area 4, inside a tree trunk: Needle essence on the bottom platform. Climb up past Waddle Dees
+  and Cappies. Side gaps hold food and a Maxim Tomato. A hidden door leads to a small room with
+  an Invincible Candy.
+  SPHERE 2: at the top of the trunk, in the leaves to the right.
+Area 5: choose Fire or Beam essence below. Gigant Edge ambushes from the right; inhale it for Sword.
+  SPHERE 3: after Gigant Edge, cut the rope set into a wall with Sword (or any cutting ability).
+
+STAGE 1-3 (3 spheres). No mid-boss.
+Area 1: short path with a Sparky. Break the bomb block at the end to open a way down to a door.
+  Ladder down into a snaking cave of Shotzos. Spark essence on the third path across.
+  The path splits (Shotzo route or Star Block route, Spark helps) and rejoins at a door
+  standing on a thin floor.
+  SPHERE 1: do not take the door. Hold down to drop through the thin floor under it.
+Area 2, blue crystal cave: moving platform with a Blade Knight, bottomless pits. A bomb block in
+  the ceiling hides a 1-Up. A Super Inhale block hides food. Hit the switch past the Hot Head
+  to open the door.
+  SPHERE 2: a gate blocks it; the key is on the far side of the chasm. Carry it back.
+Area 3: narrow passage with Waddle Doo and Beam essence. Shotzos on blocks; break the blocks
+  to drop them. Break the bomb block on the stepped area to drop all Shotzos at once.
+Area 4: spiked cave. Hit the switch. A Key Dee starts racing in a cave below.
+  SPHERE 3: race the Key Dee and catch it before it reaches the pit. The key opens the
+  gate to the right.
+
+STAGE 1-4 (4 spheres). Super Ability: Monster Flame. Has a secret HAL Room.
+Area 1, grassland: drop down ladders. Falling rock pillars along the path.
+  SPHERE 1: a passage through one of the rocky cliffs leads to a small grotto with the sphere.
+Area 2, bridge with gaps: Bowbies shoot from above. A moving platform leads to a switch; it
+  breaks a ceiling and drops an Invincible Candy. Use it to charge through. Maxim Tomato near
+  the end.
+Area 3, underground: falling stalactites. Pick up the Prism Shield above (hold it over your
+  head). A second shield replaces it later; it also blocks Shotzo shots.
+  SPHERE 2: at the end of the shield section, in a wall nook guarded by Puppet Waddle Dees.
+  Bomb block near the ladder drops more Waddle Dees.
+SECRET HAL ROOM: at the door to the next area, do not enter. Walk all the way right, then
+  come back left past the door. Sunken rock spires reveal a hidden door. Inside: field with
+  stars and food, Star Blocks spelling HAL, and Hammer, Fighter, Ninja and Wing essences.
+  A door on the right returns you to the path.
+Area 4: open the big bomb block barrier. A Super Hot Head appears among tree stumps. Inhale it
+  for Monster Flame. Burn stumps; burn the huge stump at the end to open a rift. (If you lose
+  the ability, a lower path lets you continue.)
+Rift: wall from the left. Many Comos. Super Inhale the 1-Up and the blocks around it.
+  Choose Leaf or Spark.
+  SPHERE 3 and 4: beat the Sphere Doomer. Goal is past a few Leafans.
+
+STAGE 1-5 BOSS: WHISPY WOODS. Prize: the ship's oars.
+Phase 1: drops 3 apples that bounce along the floor. Inhale them and spit them back; that is
+  your main damage. Blows air puffs in two waves; they rise or drop toward you, move so they
+  pass. Comos swing down from the leaves.
+Phase 2 (half health, Whispy grows): long inhale that sucks you in; shake (trigger) to escape.
+  Drops enemies like Gordo and Waddle Dee from above. Bigger air puffs in waves of 3; stand in
+  the gaps. Apples still come; keep spitting them back.
+
+=====================================================================
+LEVEL 2: RAISIN RUINS (16 spheres)
+=====================================================================
+
+STAGE 2-1 (3 spheres). Mid-boss: Bonkers.
+Area 1, dunes: Whippy gives Whip; its reach grabs items from small ruins. A side door holds a 1-Up
+  guarded by Gordos.
+Area 2: Flamer fire (or any fire) lights a fuse that fires a cannon. Needle essence near the end.
+  SPHERE 1: light the fuse, get in the cannon, and you are shot to the sphere's room.
+Area 3, downhill boulder tunnel: boulders drop as you go.
+  SPHERE 2: follow behind the two boulders; they smash the barrier at the end of the tunnel.
+Area 4, uphill tunnel: boulders roll at you. Hide in the nooks in the ceiling.
+Area 5: Invincible Candy, then pits.
+Area 6: grab the Parasol if you want, then fight Bonkers; inhale him for Hammer.
+  SPHERE 3: break the metal blocks with Hammer. Kabu tunnel to the goal.
+
+STAGE 2-2 (4 spheres). Super Ability: Flare Beam. Mid-boss: Fire Sphere Doomer.
+Area 1, oasis: inhale a Water Galbo for Water and surf. Items in the pools, a big cache at the end.
+Area 2, rock tunnels: Rocky gives Stone; slide down tunnels to break blockades.
+  SPHERE 1: pound the stake (Stone) to open a side door. Inside, a small bomb block puzzle.
+Area 3: deep underwater tunnel past Glunks.
+Area 4, second oasis: a side door deep in the pool, under a breakable barrier.
+  SPHERE 2: inside, break the right bomb block to open the barrier. Then take the Warp Star.
+Area 5, ruins: Moai Blocks spit fire. A Super Waddle Doo gives Flare Beam. Smash the statues;
+  one hides the rift.
+Rift: water cubes floating in the air, Blippers inside, Bronto Burts outside.
+  SPHERE 3 and 4: Fire Sphere Doomer. Exit upward to the goal.
+
+STAGE 2-3 (4 spheres). Mid-boss: King Doo.
+Area 1: climb ruin steps with ladders; small side passages hold items.
+Area 2: vertical passage with several paths; follow Point Stars up for the better items.
+Area 3: steps with Shotzos and Gigatzos shooting. Inhale a Twister for Tornado; gliding avoids shots.
+  SPHERE 1: past the shooters, Super Inhale a Star Block to open a small room with a Tornado
+  essence. Use Tornado to break the barriers to the sphere. Door upper right.
+Area 4: Starman gives Hi-Jump. Jump straight up through block barriers.
+  SPHERE 2: jump through the barrier in the middle of the column.
+Area 5: carry the Maxim Tomato box into the King Doo fight. King Doo gives Beam.
+  SPHERE 3: use Beam on the bomb block barrier on the way up.
+Area 6, cannon grid: cannons launch you upward.
+  SPHERE 4: at the top, take the cannon to the right. Goal to the right.
+
+STAGE 2-4 (5 spheres). Super Ability: Ultra Sword. Mid-bosses: Water Galboros, Fire Sphere Doomer.
+Area 1: key just to the right, guarded by a Hunter Scarfy. Carry it up the moving stairs to the
+  gate at the top.
+Area 2, sand conveyor belts that dump into pits.
+  SPHERE 1: break the floor barrier in the conveyor area to reach a side chamber. Hit the switch
+  from a distance and hurry through the gate before it closes.
+Area 3, dark passage: carry the candle for light.
+  SPHERE 2: in a nook in the ceiling.
+Area 4: fire blocks. Beat Water Galboros for Water and douse the fire blocks.
+Area 5: rows of firing Gigatzos. Carry the Transparency Crystal (makes you pass through hazards).
+  SPHERE 3: with the crystal, enter a side door.
+Area 6, outside: get Ultra Sword. Cut the huge ropes holding the stone platforms. The rift is
+  behind the last one.
+Rift: wall from the right, run left. Knock down the Shotzo stairs.
+  SPHERE 4 and 5: Fire Sphere Doomer. Then ladder down to the goal.
+
+STAGE 2-5 BOSS: MR. DOOTER. Prize: right wing.
+Phase 1: juggles skulls and bombs, then throws them. Inhale them while they float or as he
+  throws (bombs give Bomb). If you clear them all before he throws, he skips straight on.
+  Spins around the room and tries to land on you. Three big hops ending in a stomp.
+  Pulls 2 snakes from his turban; spit them back at him.
+Phase 2 (half health, gets big): high spinning stomps 3 or 5 times. A jump and three punches,
+  the last reaches far. More snakes or bats. Throws three bombs in a line that drop after a delay.
+
+=====================================================================
+LEVEL 3: ONION OCEAN (16 spheres)
+=====================================================================
+
+STAGE 3-1 (3 spheres). Super Ability: Snow Bowl. Mid-boss: Fire Sphere Doomer.
+Area 1, beach: pools, coconuts, ropes to hang on. Warp Star at the end carries you up the cliffs.
+Area 2: work down a high cliff; Parasol helps. Cross the Barracu pool at the bottom.
+Area 3: second beach with Twister and big coconuts.
+Area 4, wooden platforms over water: you get Spear here.
+  SPHERE 1: break the bomb block behind a Gordo. A side room with a small key puzzle.
+Area 5: avoid the sand castle's burning totems. Super Chilly on the far side gives Snow Bowl.
+  Roll over everything, and smash the giant sandcastle at the end for the rift.
+Rift: a switchback path down. Switches lower platforms. Some parts flooded, Gordos patrol.
+  SPHERE 2 and 3: Fire Sphere Doomer. Then right and up to the goal.
+
+STAGE 3-2 (4 spheres). Mid-boss: Kibble Blade.
+Area 1: ladder into the water, swim the channel, out past two Leafans.
+Area 2, wooden bridges: Blippers jump up. Kibble Blade gives Cutter.
+  SPHERE 1: right after Kibble Blade, cut the rope platform, then dive under the bridge.
+  The sphere is in the left wall.
+Area 3, deep reef: Spear here. Deep pools with Walfs.
+  SPHERE 2: hit a switch in a nook you cannot reach, using Spear thrown at it. A side chamber
+  opens; enemies in bomb block cages guard the sphere.
+Area 4: Stomper Boot for the spike pits; a second boot appears halfway. Enemies are stepping stones.
+  SPHERE 3: at the end of the boot section, use Bronto Burts as steps to a high platform.
+  Break the big block in front of a door; the sphere is in a side room in the next area.
+Area 5, all underwater: Barbar eels cannot be killed; swim past.
+  SPHERE 4: one Barbar guards a cache sealed by breakable blocks. Sphere inside.
+
+STAGE 3-3 (4 spheres). Super Ability: Monster Flame. Mid-bosses: Moundo, Fire Sphere Doomer.
+Area 1, waterfall cave: go down each waterfall. A Hammer essence is hidden here.
+Area 2: current pushes you through a chasm; spiked moving platforms. A moving floor reveals a
+  door to a 1-Up room.
+Area 3: current sweeps you up a vertical channel. At the top, choose a switch. A hint on the way
+  up shows which one.
+Area 4, dry cave: Moundo gives Stone.
+  SPHERE 1: right after Moundo, use Stone to sink down a pool with a strong upward current.
+  Sphere at the bottom.
+Area 5: three intertwined channels.
+  SPHERE 2: hit the switch on the RIGHT at the top to reach the cache with the sphere.
+Area 6: wind tunnels that switch back and forth.
+Area 7: Monster Flame. Burn the merman statues by hitting the barrels in their mouths. At the end a
+  Giant Flotzo pops out of a shipwreck; hit it when it pops out and the rift opens.
+Rift: floating water with Gordos and Barracu.
+  SPHERE 3 and 4: Fire Sphere Doomer. Goal is under the shipwreck.
+
+STAGE 3-4 (5 spheres). No mid-boss.
+Area 1: deep pool, press the switch at the bottom to open the underwater ruin.
+Area 2, halls with rotating spike bars.
+  SPHERE 1: a small air pocket off the main path has a round-trip door. Inside, the key is in a
+  ceiling cache. Carry it to the sphere's gate. Bomb block at the bottom to the next door.
+Area 3: many passages and switches that open walls.
+  SPHERE 2: a side chamber has two entrances. Left holds an Invincible Candy. The RIGHT one, through
+  a half-hidden door, holds the sphere, guarded by many Barracu.
+Area 4: huge spiked shells chase you through tunnels.
+  SPHERE 3: while the second shell chases you, duck into a nook and let it pass. Follow it;
+  it breaks the metal blocks over the sphere at the tunnel's end.
+Area 5: Balloon Bomb puzzle. Carry the balloon bombs down and set them off on barricades.
+  SPHERE 4: blow up the barricade with the second Balloon Bomb.
+Area 6: many Barbar, some big and sudden. Spear from a Pierce in a ceiling chamber.
+  SPHERE 5: swim to the top of the Barbar room and pierce the ceiling cache with Spear.
+
+STAGE 3-5 BOSS: FATTY PUFFER. Prize: left wing.
+Phase 1 loop: rolls into a ball and tackles; jumps and stomps (leaves stars to inhale); spits
+  little puffer fish (inhale and spit back); spits water drops (inhale for Water).
+Phase 2 (puffs up): falling stalactites you can spit back, a water cannon stream along the floor,
+  bounces around the room inflated, double rolls, more fish and Blippers.
+
+=====================================================================
+LEVEL 4: WHITE WAFERS (19 spheres)
+=====================================================================
+
+STAGE 4-1 (3 spheres). Mid-boss: Gigant Edge.
+Area 1: snowfield with igloos. Igloos hold food, enemies, and elemental blocks.
+  SPHERE 1: use Fire to melt the ice blocks inside an igloo.
+Area 2: steps; a Crackler helps with the enemies.
+Area 3: cannons over pits; some shoot you into the abyss, aim with care.
+  SPHERE 2: shoot upward into a hidden passage in the ceiling here.
+  The path splits near the end. Take the LOWER, less visible way for sphere 3.
+Area 4, lower ice tunnel with icicle spikes: Walky gives Mike.
+  SPHERE 3: above a spike pit in the lower tunnel.
+Area 5: Gigant Edge in a big igloo. Whip essence before the goal reaches a 1-Up.
+
+STAGE 4-2 (4 spheres). Super Ability: Grand Hammer. Mid-bosses: Super Bonkers, Spark Sphere Doomer.
+Area 1: fissures spit Mopoo, snowmen crumble on you. Moonja gives Ninja.
+  SPHERE 1: Fire lights a fuse behind an ice barricade. Take the cannon into a room, go through
+  the gate quickly; spikes on the far side.
+Area 2: falling icicles.
+Area 3: icy slopes; a Stomper Boot for the spike pits. Rockies at the door.
+  SPHERE 2: in a spike pit, break blocks to find a round-trip door. Inside, ride the rising
+  Mopoo as steps up to the ledge.
+Area 4: slope, Stone slide (do not slide too long).
+Area 5: Super Bonkers gives Grand Hammer. Smash the boxes; two extra-large boxes at the end
+  open the rift.
+Rift: keys and gates, spit Waddle Dees. Crackler for the Puppet Waddle Dees on tall barriers.
+  SPHERE 3 and 4: Spark Sphere Doomer. Goal to the right.
+
+STAGE 4-3 (4 spheres). Mid-boss: Water Galboros.
+Area 1: pull switch opens the way down. Coldtzo fire. Door is in a pool.
+Area 2, underwater, bouncing spiked shells.
+  SPHERE 1: carry Spear across, hit the floor switch; the pit deepens and shows the sphere.
+Area 3: rolling ice boulders.
+  SPHERE 2: carry the Transparency Crystal up, breaking ice blocks. Go through the crystal gate,
+  break the bomb block.
+Area 4: swim up waterfalls and water columns over a long pit; Barbar near the end.
+  SPHERE 3: with Cutter, drop the heavy rope platform holding a round-trip door (do not get
+  crushed). Stand on the left platform, charge a big boomerang, bounce it off the wall.
+  Inside, release an ice boulder to reach the sphere.
+Area 5: big cavern, Balloon Bombs make a path. A Balloon Bomb also hurts Water Galboros.
+  SPHERE 4: after Galboros, carry the key up the moving platform to its door. Hit the nearby switch
+  with Water to move the platform. Inside, a bomb block barrier guards the sphere.
+
+STAGE 4-4 (4 spheres). Super Ability: Snow Bowl. Mid-boss: Spark Sphere Doomer.
+Area 1: Blade Knight guards a barrier; wind and a snow conveyor belt carry you.
+Area 2: second conveyor with many Gordos.
+  SPHERE 1: grab the cannon; it fires you to an upper room.
+Area 3: wide tunnel, Prism Shields; strong updrafts carry you over pits.
+Area 4: tight tunnels going down, a Key Dee races in a parallel tunnel.
+  SPHERE 2: beat the Key Dee to its key and open the gate.
+Area 5: Super Chilly gives Snow Bowl. Knock down rows of spiky ice pins (all pins in a row = a
+  party ball of prizes). Kirby becomes a snowman head at the end and bursts the area open: rift.
+Rift: wall comes down from above. Go down breaking icicles.
+  SPHERE 3 and 4: Spark Sphere Doomer.
+
+STAGE 4-5 (4 spheres). No mid-boss.
+Area 1: outskirts of an ice ruin.
+Area 2: path splits; right is gated. Go left past a Wapod into a round-trip door; take the key from
+  the Knuckle Joe. Back to the gate.
+Area 3: long hall with sliding giant ice blocks. Crackler clears the way.
+  SPHERE 1: round-trip door in the floor between two sliding ice blocks. Enter WHILE holding the
+  Crackler. Inside, blow away the metal blocks.
+  SPHERE 2: at the end of the hall get Fire (Galbo) or keep Fighter. In the next room melt the ice
+  blocks to reveal a round-trip door to a bomb block puzzle.
+Area 4: Shelts, a ladder up.
+Area 5: split, one gated. Go right for the key (Hunter Scarfies get angry). Bring it to the gate.
+Area 6, dark hall: carry the candle. Tricky jumps, Point Stars mark the way.
+  SPHERE 3: ice barrier in the middle of the hall; melt it with the candle or Fire. Round-trip door;
+  inside use Ice.
+Area 7: carry a key past Hunter Scarfies to the exit gate.
+  SPHERE 4: carry a key past the Scarfies and open the gate on the LEFT.
+
+STAGE 4-6 BOSS: GORIATH. Prize: the emblem.
+Phase 1: throws snowballs and ice from the walls (inhale for Ice), long spinning punches, hip
+  drops from the wall and from the ground. Keep moving; stars appear where his attacks land.
+Phase 2 (golden hair): three energy blasts at angles, a rocket hip drop that bounces between walls
+  then homes in after five bounces, falling icicles after a ground pound (inhale for Ice).
+  The floor breaks and drops everyone lower up to four times.
+
+=====================================================================
+LEVEL 5: NUTTY NOON (20 spheres)
+=====================================================================
+
+STAGE 5-1 (4 spheres). No mid-boss.
+Area 1: Parasol essence over the hill, Warp Star at the top.
+Area 2: vines and floating ground over a pit. Door in a cloud nook to the right.
+Area 3: weak updraft, glide up with Parasol (also blocks falling Foleys).
+  SPHERE 1: round-trip door wrapped in Star Blocks. Inside, past Comos on a crumbling bridge.
+Area 4: hanging vine platforms under a huge cloud. Cutting abilities can cut them down.
+  SPHERE 2: cut an upper platform to reveal a round-trip door. Sphere on a crumbling platform inside.
+Area 5: long tornado tunnel; Tornado ability helps.
+  SPHERE 3: side tunnel near the end.
+Area 6: spiky boulders fall.
+  SPHERE 4: stay ahead of the big boulder rolling behind the small one. The sphere is at the end of
+  that path, which closes after.
+
+STAGE 5-2 (4 spheres). Super Ability: Flare Beam. Mid-bosses: Moundo, Spark Sphere Doomer.
+Area 1: castle bridge in the clouds.
+Area 2: columns moving up and down, many flyers (Bomb is good).
+  SPHERE 1: carry a Balloon Bomb across the moving columns and throw it at the big metal barricade.
+  Side door behind it: bomb challenge.
+Area 3: tower of rooms with pull switches; only one switch per room opens the way up.
+Area 4: bridge and Moundo (gives Stone).
+  SPHERE 2: in the next hall, pound the row of stakes with Stone, but do NOT pound the last one.
+Area 5: Flare Beam lights the Beam Lamps in narrow halls. Light them all for the rift.
+Rift: shoot star bullets at bomb blocks behind moving barriers.
+  SPHERE 3 and 4: Spark Sphere Doomer. Cannons to the goal.
+
+STAGE 5-3 (4 spheres). No mid-boss.
+Area 1: climb ropes in the tower base. Beam opens a 1-Up cache.
+Area 2: outside wall, wind and Shotzos. A Crackler helps.
+Area 3: race a Key Dee down the inside.
+  SPHERE 1: beat the Key Dee to the bottom.
+Area 4: other side, ladders, Volttzos, Paclouds.
+  SPHERE 2: break the bomb block in the wall; round-trip door; follow the path past Paclouds.
+Area 5: Hi-Jump inside.
+  SPHERE 3: switch and gate challenge; hit it and hurry.
+Area 6: rooms with pull switches; Armor Waddle Dees fall on you.
+Area 7: top of the tower, cannon to the last area.
+  SPHERE 4: high up, partly hidden by a cloud, near the Owgulf. Goal just right of the Owgulf.
+
+STAGE 5-4 (4 spheres). Super Ability: Grand Hammer. Mid-bosses: Super Bonkers, Spark Sphere Doomer.
+Area 1: Stomper Boot over open clouds. One misstep and you fall.
+  SPHERE 1: below the main path near the end is a floor of Gordos. Stomp the gold block above it
+  with the boot, walk over the Gordos, sphere on the far side.
+Area 2: cloud castle steps; ropes, Gigatzos on the walls.
+  SPHERE 2: swinging on a rope, between two Gigatzos firing at each other.
+Area 3, inside the tower: Super Bonkers gives Grand Hammer. Hit stakes to open the path to a giant
+  bell. You are launched up to hit the bell; it breaks and opens the rift.
+Rift: interlocking moving platforms.
+  SPHERE 3 and 4: Spark Sphere Doomer. Up the tower to the goal.
+
+STAGE 5-5 (4 spheres). Tower of Mid-Bosses. Has a secret path.
+You only need ONE of the two paths. Spheres count for both.
+Main path (enter the door):
+  Gigant Edge, then cut the rope in the next room: SPHERE 1.
+  Moundo, then break metal blocks: SPHERE 2.
+  Water Galboros, then douse fire blocks with Water: SPHERE 3.
+  Dubior, then use Spark in the next room: SPHERE 4.
+  Exit right; Maxim Tomato at the end.
+Secret path (harder): float above the entrance door and go through the barred window.
+  Water Galboros (Water breaks fire blocks): SPHERE 1. King Doo. Dubior (Spark): SPHERE 2.
+  Kibble Blade and Gigant Edge (cut rope): SPHERE 3. Bonkers and Moundo (pound stake): SPHERE 4.
+  Exit left.
+
+STAGE 5-6 BOSS: GRAND DOOMER. Prize: the mast. Ultra Sword stage.
+Phase 1: glide dives (duck most, but not the low dive), energy bullets (inhale and spit back),
+  a big energy bomb (Super Inhale it), dark holes in the background, and a rift that opens under
+  you (shake to escape).
+Phase 2 (half): faster, rams from the background, spiral shots, more rifts.
+Phase 3: a shield; only Super Abilities hurt it. Enemies he calls drop Super Abilities. Four
+  super hits break the shield (he can rebuild it if left alone). Then finish him.
+
+=====================================================================
+LEVEL 6: EGG ENGINES (21 spheres)
+=====================================================================
+
+STAGE 6-1 (3 spheres). Super Ability: Monster Flame. Mid-boss: Ice Sphere Doomer.
+Area 1: walkway with Volttzos firing. A fuse cannon leads to an optional area.
+Area 2: crumbling bridges. Sleep essences around; avoid them.
+Area 3: cannons past deadly clamping machines; time each shot.
+  SPHERE 1: on purpose, slam into one of the clampers; it leads to a round-trip door with a similar
+  cannon challenge.
+Area 4: Volttzo gauntlet; Spark helps.
+Area 5: Invincible Candy hall. A round-trip door needs a cutting ability.
+Area 6, factory: Monster Flame. Burn all bomb machines; light the fuse of the giant one at the top
+  for the rift.
+Rift: conveyors going left, use enemies to break bomb blocks, dodge Gordos.
+  SPHERE 2 and 3: Ice Sphere Doomer. Goal just left.
+
+STAGE 6-2 (4 spheres). Mid-boss: Dubior.
+Halls of spiked boxes, Star Block walls, Degouts and spike bars, then rooms with falling drills.
+  SPHERE 1: get an ability that douses fire (Ice or Water from the drill-room enemies). In the next
+  area a piston pushes up into fire blocks in the ceiling; the sphere is above them.
+Rocky and Volttzo area: you need Stone.
+  SPHERE 2: swim the channel, then in an air pocket use Stone to break the metal blocks.
+Then underwater saws, a switchback hall, hazards, Dubior (gives Spark), and an elevator.
+  SPHERE 3: on the elevator, use Spark on the row of bomb blocks in the ceiling; the third one opens
+  the sphere.
+Final area: pistons crash together, Hunter Degouts chase.
+  SPHERE 4: hit a switch to make a key appear, carry it through the room, open the gate at the end.
+
+STAGE 6-3 (4 spheres). Super Ability: Flare Beam. Mid-bosses: King Doo and Moundo together, Ice Sphere Doomer.
+Area 1: conveyor in strong wind, cannon, second conveyor, big leap at the end.
+  SPHERE 1: on the second conveyor, jump at the right moment to grab a pull switch.
+Area 2: swinging hammers, then King Doo and Moundo together.
+Area 3: big pit. A switch raises a walkway that slowly sinks. Run across.
+  SPHERE 2: in a gap in the wide platform that sinks with it; run across while it sinks.
+Area 4: column of drill machines. Super Waddle Doo gives Flare Beam. Light the Beam Lamps; one more
+  lamp puzzle through a doorway opens the rift.
+Rift: wall from the left; floating water over a pit with spikes, Shotzos, Blippers, Gordos.
+  Choose Spear or Hammer.
+  SPHERE 3 and 4: Ice Sphere Doomer (pool in the middle of its arena). Cannon to the right to goal.
+
+STAGE 6-4 (5 spheres). Mid-boss: Kibble Blade.
+Area 1: drop into a water pipeline; the current spirals down to an air pocket with a door.
+Area 2: dark tunnels; carry the candle. A Sodory guards a Hammer essence.
+  SPHERE 1: with Hammer, break metal blocks elsewhere in the dark maze.
+  A hidden doorway lies a bit past the end door.
+Area 3: hall splits, the lower path has running water.
+  SPHERE 2: from the dark area take the SECOND doorway, then cross the underwater channel.
+Area 4: Kibble Blade (gives Cutter).
+  SPHERE 3: after him, hit a switch past a waterfall with Cutter.
+Area 5: underwater maze; avoid being pushed into a Barracu.
+  SPHERE 4: take the lower path near the end of the maze.
+Area 6: Barbars, Water Gun sets off bomb blocks.
+  SPHERE 5: a round-trip door guarded by a giant Barbar. Inside it is dark; hit the right bomb
+  blocks in the ceiling to find a key (Spark or a candle helps), then open the sphere's gate.
+
+STAGE 6-5 (5 spheres). No mid-boss. Has a secret HAL Room.
+Area 1: factory, Waddle Doo gives Beam, pistons. Ceiling switch drops a piston on the Halcandle
+  Dees at the door; a 1-Up appears.
+Area 2: dodge falling ceilings until the door appears.
+  SPHERE 1: on the left, riding along one of the openings of the last crushing ceiling.
+Area 3: conveyors over a pit that becomes a fast belt.
+  SPHERE 2: round-trip door guarded by an Armor Waddle Dee. Carry a key past Gordos to a gate.
+SECRET HAL ROOM: at the far end of the conveyor room, a conveyor drops Halcandle Dees from a
+  ceiling room above the normal door. Go up there; hidden door at the far right. Cannons and
+  breakable ceilings; HAL in Star Blocks with Whip, Water, Leaf and Spear essences. Door on the
+  right returns to the route.
+Area 4: five more falling ceilings in harder patterns.
+  SPHERE 3: high in a nook of one of the falling ceilings.
+Area 5: Transparency Crystal past lines of Gordos.
+  SPHERE 4: through a crystal gate near the bottom, behind Degouts.
+Area 6: last crushing room. Duck through a gap in the first ceiling, dodge the second, drop back
+  as they rise. The last ceilings push you left; the exit appears on the right.
+  SPHERE 5: appears in the air as the last ceilings come down. Grab it fast.
+
+STAGE 6-6 BOSS: METAL GENERAL. Beating it opens Dangerous Dinner.
+Phase 1: beam saber slashes, electric needle, a spinning saber attack, rocket launcher with
+  3 missiles (inhale for Bomb).
+Phase 2 (sparking at about half): rams from the background twice with a big missile (inhale
+  the rocket for Crash, or hit it before it launches), loops across the room with electricity,
+  drones (inhale for Beam), mines (inhale for Bomb), 5 missiles.
+
+=====================================================================
+LEVEL 7: DANGEROUS DINNER (15 spheres)
+=====================================================================
+
+STAGE 7-1 (5 spheres). Super Ability: Snow Bowl. Mid-bosses: Water Galboros, Ice Sphere Doomer.
+Area 1: lava pools; time your steps.
+Area 2: diagonal tunnel with rolling magma boulders, crumbling hall.
+  SPHERE 1: grab the key while running down the crumbling hall; carry it to the gate (sphere and 1-Up).
+Area 3: Flamers, then Water Galboros (gives Water) while a Shotzo fires. Magma beds.
+  SPHERE 2: with Water, escort the second key across the magma floor. Open the gate; side room with
+  a Water puzzle.
+Area 4: thin path over magma; Iron Barbars leap up to bite.
+  SPHERE 3: one Iron Barbar guards a bomb block. Break it; side room where you guide a Key Dee
+  over the gaps and get its key.
+Area 5: Snow Bowl up the slopes, knock pins. Freeze the caldera at the top: rift.
+Rift: go left past Gigatzos. Pull switches between crushers.
+  SPHERE 4 and 5: Ice Sphere Doomer. Exit left to goal.
+
+STAGE 7-2 (5 spheres). Super Ability: Grand Hammer. Mid-bosses: Super Bonkers, Ice Sphere Doomer.
+Area 1: switch starts an elevator down; enemies from below, boulders.
+  SPHERE 1: on the left side of this area, guarded by a horde of Degouts.
+Area 2: moving blocks (some hot) and moving magma walls.
+  SPHERE 2: two Moonjas guard a hidden passage in the rock. Side room: cut a rope with a well-timed
+  attack (Ninja works).
+Area 3: thin shaft, Hi-Jump. Walls close in.
+  SPHERE 3: fly up the passage that closes quickly; the sphere is at the top. Cannon to the door.
+Area 4: dark cave, carry a candle across water.
+Area 5: ceiling comes down at once. Crackler helps. Run right.
+Area 6: Super Bonkers gives Grand Hammer. Pound stakes to complete wires; knock down every burner
+  box in the last room for the rift.
+Rift: column down with moving walls, then swimming, then walls flying in.
+  SPHERE 4 and 5: Ice Sphere Doomer on a moving floor. Three Moonjas at the goal.
+
+STAGE 7-3 (5 spheres). Super Ability: Ultra Sword. Many mid-bosses. Secret exit.
+Area 1: two cannons down; time the second to miss crushing walls.
+Area 2: fire orbs, bridges of breakable blocks over pits.
+  SPHERE 1: under a bridge where fire orbs patrol. Break the blocks at the bridge's end to get under it.
+Area 3: swaying orbs, falling rock pillars.
+Area 4: scrolling floor with pits. Dubior (gives Spark if it does not fall in a pit). Maxim Tomato
+  in a ceiling inlet.
+Area 5: open area with big fire orbs and Parasol Halcandle Dees.
+  SPHERE 2: one of the bigger orbs hides a round-trip door: a hard Stomper Boot challenge.
+Area 6: Prism Shield; switch opens the ceiling and the floor starts rising. Beat the Key Dee at the top.
+Area 7: climb with the key, fire orbs cross, Iron Barbars come out of walls (wait for them).
+  Spark helps. Do not let the key break.
+  SPHERE 3: carry the key to the top and open the sphere's gate.
+Area 8: Ultra Sword; it kills each mid-boss in one hit. Cut the caldera in half: rift.
+Rift: nearly every rift enemy, then TWO Sphere Doomers at once.
+  SPHERE 4 and 5: from the two Sphere Doomers. Then a Warp Star to the goal.
+Secret: in the last room, a hidden door in the sky above the goal. Long fall collecting Point Stars,
+  second goal at the bottom.
+
+STAGE 7-4 BOSS: LANDIA (four-headed dragon, on the volcano).
+Phase 1: fire breath (cannot be inhaled), spinning tail attack (stars on the last hit), a glide dive
+  you cannot duck, two-headed flame across much of the stage, wind gust with 8 cutter blades.
+Phase 2: splits into four dragons. Fire rain, a grid of electricity between them, dives two at a
+  time, a fireball passed between them, 11 cutter blades. The dragon with the crown takes more
+  damage: focus it.
+
+=====================================================================
+LEVEL 8: ANOTHER DIMENSION (ending)
+=====================================================================
+
+After Landia, Magolor reveals he wanted the Master Crown.
+
+Part 1, shooter: you ride Landia. Keep firing, enemy shots can be shot down. Avoid crushing cave
+  walls. Leapers split into missiles when destroyed; move after killing them. In the second part,
+  dodge the crystals you cannot break, shoot wall switches to open gates. The spin move goes
+  through crystals but use it as a last resort.
+
+Part 2, Lor Starcutter: Magolor attacks with the ship's own parts: emblem shots, wing boomerangs,
+  homing oars, a mast vortex, shields, charging. At half: big colored energy balls, fires from
+  the background, a whirlwind. Keep shooting.
+
+Part 3, Magolor: you keep your ability; essences for Spear, Spark, Fighter, Water, Whip, Sword.
+  He throws dark orbs (can be knocked back), floor spikes, jumps into the background to fire,
+  calls Para-Doomers. At half: a vortex pulling you in (run hard the other way) and a beam
+  covering the floor.
+  Then he puts up a star shield and summons enemies that give Super Abilities. Hit him with a
+  super attack while he is in the foreground. Every two hits he takes your ability. The last
+  one is Ultra Sword. When the shield breaks, shake (or tap directions fast) to push your last
+  strike through.
+
+Part 4, Magolor second form (Master Crown): juggles enemies and throws them; the first one gives
+  back your ability. Spikes, dark orbs, travels through rifts, a beam, then at half his own
+  versions of the Super Abilities and beams through rifts. Beat him and the crown shatters.
+  Ending and credits.
+
+=====================================================================
+AFTER THE STORY
+=====================================================================
+
+Extra Mode: harder replay. Less health, stronger bosses, new boss versions (for example HR-D3
+  after Metal General, Lor EX, Magolor Soul at the end).
+The Arena and The True Arena: boss rush modes with rest rooms between fights.
+100 percent: collect all 120 Energy Spheres, clear the challenge stages, and the extra modes.
+
+END OF FILE
