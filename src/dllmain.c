@@ -97,6 +97,16 @@ static DWORD WINAPI mod_thread(LPVOID unused) {
                 cdown[i] = d;
             }
         }
+        {   /* any keyboard key down (it makes NVDA stop talking): for speak_long */
+            static unsigned char was[256]; int any = 0, pressed = 0;
+            if (game_has_focus()) for (int vk = 0x08; vk <= 0xDF; vk++) {
+                if (vk == VK_SHIFT || vk == VK_CONTROL || vk == VK_MENU) continue;   /* the L/R versions are checked */
+                int d = GetAsyncKeyState(vk) < 0;
+                if (d) { any = 1; if (!was[vk] && !pressed) pressed = vk; }
+                was[vk] = (unsigned char)d;
+            }
+            speech_long_tick(pressed, any);
+        }
         pad_poll();
         game_poll();
         text_poll();

@@ -94,6 +94,7 @@ static void f_thrown(void) {
     tone_offset(0);
 }
 static void f_midboss(void) { snd_boss(1, 0, 0.45f, 0.5f); }
+void snd_boss_rush(float dy, float gain, float pan); static void f_rush(void) { snd_boss_rush(0, 0.3f, 0.6f); }
 static void f_key(void) { snd_key(0.5f); }
 static void f_carry(void) { snd_carry_item(0.5f); }
 static void f_gate(void) { snd_locked_gate(0.5f); }
@@ -217,7 +218,8 @@ static const Entry k_enemies[] = {
     { "Spiky plant (obstacle)", "A harsh buzz. A thorny plant that hurts to touch. Jump over it or go around.", D_ENEMY, 11, NULL },
     { "Rolling ball (obstacle)", "A long rumbling noise. A big ball rolling along the ground. Jump over it or get out of its path.", D_ENEMY, 38, NULL },
     { "Falling rock (obstacle)", "A long rumbling noise. A rock falling or rolling down. Move out of the way.", D_ENEMY, 143, NULL },
-    { "Boss", "A heavy, low double drum beat from where the boss is, using the same left, right and pitch code. It beats faster the closer the boss is. When a boss appears you hear its name and what it does (Control F2 says that again; the Bosses category has them all); its health is said at each quarter, and \"defeated\" at the end. Its thrown attacks have their own sound, the next entry. F2 says where the boss is and its health.", D_FN, 0, f_boss },
+    { "Boss", "A heavy, low double drum beat from where the boss is, using the same left, right and pitch code. It beats faster the closer the boss is. When a boss appears you hear its name and what it does (Control F2 says that again; the Bosses category has them all); its health is said at each quarter, and \"defeated\" at the end. When it charges at Kirby you hear a whoosh (the next entry), and its thrown attacks tick like \"Something thrown at you\". F2 says where the boss is and its health.", D_FN, 0, f_boss },
+    { "Boss rushing at you", "A fast rising whoosh with a low growl, from the boss's side: a boss is charging, diving or rolling toward Kirby right now, faster than the drum can tell you. Jump, float up or move away at once.", D_FN, 0, f_rush },
     { "Something thrown at you", "Shots, balls, apples, bombs, magic balls, falling rocks and stars to inhale tick all the time while they fly, from where they are: left or right, higher when above Kirby. The ticks get faster and louder as the thing gets close. A sharp tick with a little hiss means it is coming toward Kirby; a soft, lower tick means it is moving away. Without an ability, when one reaches the front of Kirby's mouth the breathy draw-in plays: press X to inhale it, then turn to the boss and press X again to spit it back. Dangerous things you can't inhale, like fire orbs, falling rocks and crystals, tick with a low buzz instead. This plays one flying in from the right, reaching Kirby, then one going away to the left.", D_FN, 0, f_thrown },
     { "Mid-boss", "A metal clang instead of a drum: a mid-boss, a big enemy partway through a stage, like Bonkers or Kibble Blade. Many give a copy ability when beaten and inhaled.", D_FN, 0, f_midboss },
     { "Other enemies", "Every other kind of enemy has its own fixed sound too, made from its name, so it always sounds the same. Press F2 in a stage to hear the names of the enemies near you.", D_ENEMY, 47, NULL },

@@ -126,7 +126,7 @@ static const char *const k_enemy_where[147] = {
     /* 123 missile */ "",
     /* 124 missile */ "",
     /* 125 thunder */ "",
-    /* 126 Fatty Buffer junior */ "",
+    /* 126 Fatty Puffer junior */ "",
     /* 127 water shot */ "",
     /* 128 stalactite */ "",
     /* 129 Wapod */ "Found in White Wafers stage 5 and Egg Engines stage 1.",

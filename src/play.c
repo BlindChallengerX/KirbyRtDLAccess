@@ -68,11 +68,11 @@ static const char *const k_enemy_names[147] = {
     "Leaper", "Bronto Burt", "Armor Waddle Dee", "Nruff", "Degout", "Scarfy",
     "Waddle Dee carrying a block", "Rolling ball", "Sandbag", "Waddle Dee", "Bouncy", "Bowby",
     "Sun", "Sun", "Crystal meteor", "Rolling ball", "Star", "Cappy's cap",
-    "Magolor shot", "Magolor shot", "Magolor shot", "Magolor shot", "Apple", "Apple",
+    "dark energy shot", "dark energy shot", "dark energy shot", "dark energy shot", "Apple", "Apple",
     "ball", "ball", "snake", "snake", "bomb", "Parasol",
     "Dubior junior", "bomb", "shot", "cutter blade", "bomb", "spark",
     "ball", "bit", "bomb", "missile", "missile", "thunder",
-    "Fatty Buffer junior", "water shot", "stalactite", "Wapod", "snowball", "ice ball",
+    "Fatty Puffer junior", "water shot", "stalactite", "Wapod", "snowball", "ice ball",
     "icicle", "missile", "magic ball", "Magolor", "defeated boss", "Landia",
     "Landia", "Waddle Dee", "shot", "Apple", "missile", "falling rock",
     "hammer", "Magolor", "Cappy",
@@ -304,7 +304,7 @@ static int creature_kind(uint32_t kind) {
     if (enemy_sig(kind).hazard) return 0;
     if (kind < 96) return 1;
     const char *n = enemy_name(kind);
-    return !strcmp(n, "Dubior junior") || !strcmp(n, "Fatty Buffer junior") || !strcmp(n, "snake") ||
+    return !strcmp(n, "Dubior junior") || !strcmp(n, "Fatty Puffer junior") || !strcmp(n, "snake") ||
            !strcmp(n, "Wapod") || !strcmp(n, "Waddle Dee") || !strcmp(n, "Cappy");
 }
 int enemy_is_creature(uint32_t kind) { return creature_kind(kind); }
@@ -660,6 +660,12 @@ static int merge_boss_parts(BossPos *bp, int n) {
     return k;
 }
 /* A heavy double drum beat (a mid-boss: a lighter metal clang). */
+/* A boss rushing at Kirby: a fast rising whoosh over a low growl. */
+void snd_boss_rush(float dy, float gain, float pan) {
+    float m = powf(2.0f, (dy > 12 ? 12 : dy < -12 ? -12 : dy) / 12.0f);
+    tone(500, 2600, 0.2f, gain * 0.7f, pan, W_NOISE);
+    tone(110 * m, 170 * m, 0.2f, gain * 0.8f, pan, W_SAW);
+}
 void snd_boss(int mid, float dy, float gain, float pan) {
     float m = powf(2.0f, (dy > 12 ? 12 : dy < -12 ? -12 : dy) / 12.0f);
     if (mid) {   /* a light metal clang: a short square strike over a softer triangle ring (the old full square was harsh) */
@@ -948,8 +954,9 @@ static int s_edge_col = -9999;
 static int s_route_dir;            /* last spoken/played vertical guidance */
 static Door s_target; static int s_have_target;
 static int s_at_door, s_at_hub_door = -1;
-static DWORD s_next_hub, s_next_warp, s_next_ship, s_next_boss;
-static uint32_t s_boss_seen[8]; static int s_boss_quarter[8], s_nboss_seen;
+static DWORD s_next_hub, s_next_warp, s_next_ship, s_next_boss, s_next_census; static int s_census;
+static float s_boss_pd[8]; static DWORD s_boss_pt[8], s_rush_t;
+static uint32_t s_boss_seen[8], s_boss_seen_kind[8]; static int s_boss_quarter[8], s_nboss_seen;   /* addr + kind: the Arena builds each new boss where the last one was */
 static uint32_t s_boss_told;   /* kinds named and described in this area (Landia splits into four) */
 static uint32_t s_last_boss_kind = 0xffffffff;
 static int s_at_ship_door = -1;
@@ -981,6 +988,7 @@ static void new_area(void) {
 
 /* Choose the exit: a door that is not the one Kirby came in by, farthest
  * from where he came in. */
+static int s_target_boss;   /* the target is a boss, not a door: picked again every poll */
 static void pick_target(void) {
     Door d[20]; int n = read_doors(s_comp, d, 20);
     int best = -1; float bd = -1;
@@ -996,6 +1004,30 @@ static void pick_target(void) {
     }
     s_have_target = best >= 0;
     if (s_have_target) s_target = d[best];
+    /* no door at all (a boss arena like Whispy Woods's, entered high up): the way leads to the
+     * boss while it is far above or below; near its height the boss drum is enough */
+    s_target_boss = 0;
+    if (!s_have_target) {
+        BossPos bp[4]; int nb = read_bosses(s_comp, bp, 4);
+        for (int i = 0; i < nb; i++)
+            if (bp[i].hp != 0 && fabsf(bp[i].y - s_y) > 8.0f) {
+                s_have_target = 1; s_target_boss = 1;
+                memset(&s_target, 0, sizeof s_target); s_target.x = bp[i].x; s_target.y = bp[i].y; s_target.role = -1; s_target.label = "The boss";
+                /* a boss inside the wall (Whispy Woods is the wall): lead to the nearest open
+                 * tile with ground under it instead, so the route can reach it */
+                int bx = (int)floorf(bp[i].x), by = (int)floorf(bp[i].y + 0.5f);
+                if (bx < 0 || by < 0 || bx >= g_w || by >= g_h || is_wall(bx, by)) {
+                    int best_d = 1 << 30;
+                    for (int y = by - 6; y <= by + 6; y++) for (int x = bx - 12; x <= bx + 12; x++) {
+                        if (x < 1 || y < 1 || x >= g_w - 1 || y >= g_h) continue;
+                        if (is_wall(x, y) || !is_wall(x, y - 1)) continue;
+                        int d = (x - bx) * (x - bx) + 4 * (y - by) * (y - by);
+                        if (d < best_d) { best_d = d; s_target.x = x + 0.5f; s_target.y = (float)y; }
+                    }
+                }
+                break;
+            }
+    }
 }
 
 void speak_dir(char *buf, size_t cap, float dx, float dy) {
@@ -1403,6 +1435,28 @@ static void shooter_poll(uint32_t comp, DWORD now) {
     }
 }
 
+/* dev: every object near Kirby and what the mod does with it (radar = enemy sound,
+ * thrown = tick, hazard = low tick); "census on" once a second, and at each hit in god mode */
+static void census_dump(uint32_t comp, uint32_t hero, float range, const char *tag) {
+    Enemy e[48]; int n = read_enemies(comp, e, 48);
+    for (int i = 0; i < n; i++) {
+        float dx = e[i].x - s_x, dy = e[i].y - s_y;
+        if (fabsf(dx) > range || fabsf(dy) > range * 0.6f) continue;
+        const char *what = thrown_kind(e[i].kind) ? (thing_hazard(e[i].kind) ? "hazard" : "thrown") : "radar";
+        log_line("%s E %u %s %s dx %.1f dy %.1f", tag, e[i].kind, enemy_name(e[i].kind), what, dx, dy);
+    }
+    Enemy w[48]; int nw = read_weapons(comp, w, 48);
+    for (int i = 0; i < nw; i++) {
+        float dx = w[i].x - s_x, dy = w[i].y - s_y;
+        if (fabsf(dx) > range || fabsf(dy) > range * 0.6f) continue;
+        log_line("%s W %u team %u dx %.1f dy %.1f", tag, w[i].kind - 1000, w[i].id, dx, dy);
+    }
+    BossPos bp[4]; int nb = read_bosses(comp, bp, 4);
+    for (int i = 0; i < nb; i++) log_line("%s B %u %s dx %.1f dy %.1f hp %d/%d", tag, bp[i].kind, boss_name(bp[i].kind), bp[i].x - s_x, bp[i].y - s_y, bp[i].hp, bp[i].maxhp);
+    uint32_t hpp = hero ? r32(hero + 0x138) : 0;
+    if (is_ptr(hpp)) log_line("%s K hp %u/%u at %.1f %.1f", tag, r32(hpp), r32(hpp + 4), s_x, s_y);
+}
+
 void play_poll(void) {
     DWORD now = GetTickCount();
     if (g_movie_playing || g_learn_open) { if (s_have) { if (!g_learn_open) hum_all_off(); s_have = 0; } return; }
@@ -1415,7 +1469,7 @@ void play_poll(void) {
     }
     s_comp = comp; s_hero = hero;
     walk_poll(hero);
-    if (s_god) { uint32_t hp = r32(hero + 0x138); if (is_ptr(hp) && r32(hp + 4) > 0 && r32(hp + 4) < 1000) guest_w32(hp, r32(hp + 4)); }
+    if (s_god) { uint32_t hp = r32(hero + 0x138); if (is_ptr(hp) && r32(hp + 4) > 0 && r32(hp + 4) < 1000) { if (r32(hp) < r32(hp + 4)) { log_line("hurt %u/%u at %.1f %.1f", r32(hp), r32(hp + 4), s_x, s_y); if (s_census) census_dump(comp, hero, 8, "hit"); } guest_w32(hp, r32(hp + 4)); } }
     int fresh = !s_have;
     s_px = s_have ? s_x : x; s_py = s_have ? s_y : y;
     s_x = x; s_y = y; s_have = 1;
@@ -1626,6 +1680,7 @@ void play_poll(void) {
             float dx = e[i].x - s_x, dy = e[i].y - s_y;
             if (fabsf(dx) > 14 || fabsf(dy) > 9) continue;
             if (thrown_kind(e[i].kind)) continue;   /* thrown things have their own ticks (and Kirby's own star none) */
+            { const char *bn = enemy_name(e[i].kind); if (!strcmp(bn, "Landia") || !strcmp(bn, "Magolor") || !strcmp(bn, "defeated boss")) continue; }   /* bosses: the boss drum */
             order[m++] = i;
         }
         for (int i = 0; i < m; i++) for (int j = i + 1; j < m; j++) {
@@ -1651,18 +1706,33 @@ void play_poll(void) {
         n = merge_boss_parts(bp, n);
         for (int i = 0; i < n; i++) {
             int slot = -1;
-            for (int j = 0; j < s_nboss_seen; j++) if (s_boss_seen[j] == bp[i].addr) slot = j;
-            if (slot < 0 && s_nboss_seen < 8) {
-                slot = s_nboss_seen++; s_boss_seen[slot] = bp[i].addr; s_boss_quarter[slot] = 4;
+            for (int j = 0; j < s_nboss_seen; j++) if (s_boss_seen[j] == bp[i].addr && s_boss_seen_kind[j] == bp[i].kind) slot = j;
+            if (slot < 0) {
+                if (s_nboss_seen < 8) slot = s_nboss_seen++;
+                else { slot = 0; for (int j = 1; j < 8; j++) { s_boss_seen[j - 1] = s_boss_seen[j]; s_boss_seen_kind[j - 1] = s_boss_seen_kind[j]; s_boss_quarter[j - 1] = s_boss_quarter[j]; } slot = 7; }
+                s_boss_seen[slot] = bp[i].addr; s_boss_seen_kind[slot] = bp[i].kind; s_boss_quarter[slot] = 4; s_boss_pt[slot] = 0;
                 uint32_t bit = bp[i].kind < 32 ? 1u << bp[i].kind : 0;
                 for (uint32_t k = 0; k < 22; k++)   /* kinds that share a name (two Lor Starcutters, two Magolors) */
                     if ((s_boss_told & (1u << k)) && !strcmp(boss_name(k), boss_name(bp[i].kind)) && !strcmp(boss_desc(k), boss_desc(bp[i].kind))) s_boss_told |= bit;
                 if (!(s_boss_told & bit)) {
                     s_boss_told |= bit;
-                    speakf(0, "%s%s! %s", boss_is_mid(bp[i].kind) ? "Mid-boss: " : "Boss: ", boss_name(bp[i].kind), boss_desc(bp[i].kind));
-                    speech_protect((DWORD)(strlen(boss_desc(bp[i].kind)) * 65 + 2000));   /* about 15 characters a second */
+                    char d[1536]; snprintf(d, sizeof d, "%s%s! %s", boss_is_mid(bp[i].kind) ? "Mid-boss: " : "Boss: ", boss_name(bp[i].kind), boss_desc(bp[i].kind));
+                    speak_long(d);   /* protected, and said again if a keyboard key cuts it */
                 }
                 s_last_boss_kind = bp[i].kind;
+            }
+            /* rush: the boss closing in fast (a charge, dive or roll) gets a whoosh from its side
+             * at once, without waiting for the next drum beat */
+            if (slot >= 0 && now - s_boss_pt[slot] >= 100) {
+                float dx = bp[i].x - s_x, dy = bp[i].y - s_y, d = sqrtf(dx * dx + dy * dy);
+                if (s_boss_pt[slot] && now - s_boss_pt[slot] < 400) {
+                    float v = (s_boss_pd[slot] - d) * 1000.0f / (float)(now - s_boss_pt[slot]);
+                    if (v > 5.0f && d < 12.0f && d > 0.8f && now - s_rush_t > 900 && bp[i].hp != 0) {
+                        s_rush_t = now; snd_boss_rush(dy, 0.32f * (1.0f - d / 14.0f), fmaxf(-1, fminf(1, dx / 7)) * 0.8f);
+                        CUE("cue boss rush %s dx %.1f dy %.1f speed %.1f", boss_name(bp[i].kind), dx, dy, v);
+                    }
+                }
+                s_boss_pd[slot] = d; s_boss_pt[slot] = now;
             }
             if (slot >= 0 && bp[i].maxhp > 0 && bp[i].hp >= 0 && bp[i].hp <= bp[i].maxhp) {
                 int q = bp[i].hp == 0 ? 0 : (bp[i].hp * 4 + bp[i].maxhp - 1) / bp[i].maxhp;
@@ -1685,6 +1755,8 @@ void play_poll(void) {
         }
         if (!n && s_nboss_seen && now - s_area_t > 2000) { /* keep the list until the area changes */ }
     }
+
+    if (s_census && (int)(now - s_next_census) >= 0) { s_next_census = now + 1000; census_dump(comp, hero, 20, "census"); }
 
     areas_poll();
 
@@ -1911,7 +1983,7 @@ void play_poll(void) {
     /* ---- route to the exit ---- */
     if (g_route_on && !s_riding && (int)(now - s_next_route) >= 0) {
         s_next_route = now + 350;
-        if (!s_have_target || now - s_area_t < 1500) pick_target();
+        if (!s_have_target || s_target_boss || now - s_area_t < 1500) pick_target();
         if (s_have_target) {
             route_build((int)floorf(s_target.x), (int)floorf(s_target.y + 0.5f));
             int side, total = 0;
@@ -1957,7 +2029,10 @@ void play_poll(void) {
 }
 
 /* ---- spoken reports (keys) ---- */
+extern volatile int g_pause_open;
+void play_say_boss(void);
 void play_say_enemies(void) {
+    if (g_pause_open && s_nboss_seen && s_last_boss_kind != 0xffffffff) { play_say_boss(); return; }   /* paused in a boss fight: how to beat it */
     if (!s_have) { speak(L"Not in a stage", 1); return; }
     Enemy e[20]; int n = read_enemies(s_comp, e, 20);
     char buf[1024] = ""; int k = 0;
@@ -2088,7 +2163,8 @@ void play_say_route(void) {
     speak_dir(where, sizeof where, s_target.x - s_x, s_target.y - s_y);
     const char *how = rise >= 2 ? "The way goes up here" : rise <= -2 ? "The way goes down here" :
                       side > 0 ? "The way goes right" : side < 0 ? "The way goes left" : "";
-    snprintf(buf, sizeof buf, "%s, %s. %s.", s_target.label ? s_target.label : "Exit door", where, how);
+    if (s_target_boss) speak_dir(where, sizeof where, s_target.x - s_x, s_target.y - s_y);
+    snprintf(buf, sizeof buf, *how ? "%s, %s. %s." : "%s, %s.", s_target.label ? s_target.label : "Exit door", where, how);
     Door od[20]; int on = read_doors(s_comp, od, 20);
     for (int i = 0; i < on; i++) {
         if (fabsf(od[i].x - s_target.x) < 0.1f && fabsf(od[i].y - s_target.y) < 0.1f) continue;
@@ -2143,6 +2219,8 @@ void play_cmd(const char *line) {
     if (!strcmp(line, "humoff")) hum_set(5, 300, 0, 0, W_SINE);
     if (!strcmp(line, "cues on")) g_cue_log = 1;
     if (!strcmp(line, "cues off")) g_cue_log = 0;
+    if (!strcmp(line, "census on")) s_census = 1;   /* dev: log every object near Kirby once a second */
+    if (!strcmp(line, "census off")) s_census = 0;
     if (!strcmp(line, "walk")) walk_load();
     if (!strcmp(line, "grid")) {   /* dev: the grid the cues use (blocks and locked gates solid) to KirbyAccess\grid.txt */
         wchar_t p[MAX_PATH]; swprintf(p, MAX_PATH, L"%lsgrid.txt", g_mod_dir);
@@ -2185,7 +2263,23 @@ void play_item_sound(uint32_t kind, float delay, float semis, float gain, float 
 /* Ctrl+F2: what the boss of this fight (or the last one) does. */
 void play_say_boss(void) {
     if (s_last_boss_kind == 0xffffffff) { speak(L"No boss fight yet", 1); return; }
-    speakf(1, "%s. %s", boss_name(s_last_boss_kind), boss_desc(s_last_boss_kind));
+    char d[1536]; snprintf(d, sizeof d, "%s. %s", boss_name(s_last_boss_kind), boss_desc(s_last_boss_kind));
+    speech_stop(); speak_long(d);
+}
+
+/* The game's pause menu is open: in a boss fight, say once per area that F2 / the left
+ * stick click tells how to beat the boss (the game waits while you listen). */
+extern volatile int g_pause_open;
+static int s_pause_hinted_area = -2;
+void play_pause_hint(void) {
+    if (!s_have || !s_comp || !s_nboss_seen || s_last_boss_kind == 0xffffffff) return;
+    int ak = area_kind(s_comp);
+    if (ak == s_pause_hinted_area) return;
+    static DWORD first; DWORD now = GetTickCount();
+    if (now - first > 3000) first = now;   /* a fresh pause: wait a moment so the menu is read first */
+    if (now - first < 1200) return;
+    s_pause_hinted_area = ak;
+    speakf(0, "F2 or left stick click: how to beat %s.", boss_name(s_last_boss_kind));
 }
 
 /* Shift+F3: every move of the ability Kirby has, from the game's own move list. */

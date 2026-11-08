@@ -542,6 +542,8 @@ static void check_menus(Item *it, int n) {
     }
 }
 
+void play_pause_hint(void);
+volatile int g_pause_open;   /* the game's pause menu is on screen (its "Pause Menu" title) */
 void text_poll(void) {
     DWORD now = GetTickCount();
     /* checks every 50 ms so a menu move is spoken about 0.1 s after the key */
@@ -551,7 +553,7 @@ void text_poll(void) {
     static Line lines[64];
     static Item items[256];
     static wchar_t itext[256][300];
-    int nl = 0, ni = 0, nnew = 0;
+    int nl = 0, ni = 0, nnew = 0, pause_seen = 0;
     for (int i = 0; i < s_nbox; i++) {
         Box *b = &s_box[i];
         uint32_t a = b->addr;
@@ -569,6 +571,7 @@ void text_poll(void) {
         float gx = rf32(a + 0x90), gy = rf32(a + 0xa0), gs = fabsf(rf32(a + 0x84)) + fabsf(rf32(a + 0x88));
         int on_screen = gx > -440 && gx < 440 && gy > -250 && gy < 250 && gs > 0.05f;
         int shown = drawn && on_screen && chain_visible(a) && box_text(a, t, 300);
+        if (shown && !wcscmp(t, L"Pause Menu")) pause_seen = 1;
         if (g_text_log == 2 && on_screen && box_text(a, t, 300)) {   /* dev: "textlog all" - every box on screen and why it is (not) read */
             char *u = to_utf8(t); log_line("box %08x %s | drawn %d vis %d hud %d sc %.2f | %s", a, u ? u : "?", drawn, chain_visible(a), is_hud(a), rf32(a + 0x84), shown ? "READ" : "skipped"); free(u);
         }
@@ -641,6 +644,8 @@ void text_poll(void) {
         }
         b->shown = shown; b->hash = h;
     }
+    g_pause_open = pause_seen;
+    if (pause_seen) play_pause_hint();
     if (nnew >= 3) s_new_t = now;
     /* A confirmation dialog (Quit / Exit Stage: "Are you sure?" Yes / No) sits in front of the
      * pause menu, whose buttons share the same pane names and stay on screen. While one is

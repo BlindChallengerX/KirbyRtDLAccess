@@ -1,4 +1,4 @@
-Kirby Access 0.8.6
+Kirby Access 0.8.7
 
 A screen reader and audio mod for Kirby's Return to Dream Land on PC, using
 the Kirby Wii Recomp port (KirbyRecomp.exe, by ExpansionPak / ModernGekko).
@@ -109,6 +109,7 @@ Information keys:
   Shift+F2   items nearby (food, Energy Spheres, 1-Ups, copy ability stars
              by name), keys and other things to carry, locked gates
   Ctrl+F2    what the boss you are fighting does, and how to beat it
+             (in a boss fight, F2 says this too while the game is paused)
   F3         health, copy ability, lives, and whether Kirby is on the
              ground, on a platform, in the air or in water
   Shift+F3   every move of Kirby's current ability, with its buttons
@@ -397,11 +398,22 @@ Bosses and mid-bosses
   When a boss fight starts you hear its name ("Boss: Goriath!", "Mid-boss:
   Kibble Blade!") and a short description: what it is, its attacks, and how
   to hurt it, for example which of its attacks you can inhale and spit back.
-  Ctrl+F2 says it again during the fight.
+  If you press a keyboard key while it is being read, your screen reader
+  stops talking; the mod notices and reads it again from where it was cut
+  (twice at most). Controller buttons don't cut it.
+  To plan a fight, pause the game (plus / Start). In a boss fight the mod
+  then says "F2 or left stick click: how to beat ..."; press either one and
+  the whole description is read while the game waits. Ctrl+F2 says it again
+  at any time.
   During the fight a boss gives a heavy double drum beat from where it is; a
   mid-boss gives a lighter metal clang. The beats come faster when it is
-  close. Its health is read at each quarter ("Goriath health 70 percent"),
+  close. When a boss charges, dives or rolls toward Kirby, a fast rising
+  whoosh with a low growl plays from its side at once: get out of the way.
+  Its health is read at each quarter ("Goriath health 70 percent"),
   and "defeated!" at the end. F2 names the boss with its health.
+  Some arenas start away from the boss (Whispy Woods's starts high above
+  it). There the way guide and F4 lead to the boss until you are near its
+  height.
 
 Things thrown at you
   Shots, balls, apples, bombs, magic balls, falling rocks and the stars a
@@ -466,8 +478,11 @@ Hazards, things to work, and Another Dimension
   those were checked from the stage files only. Dangerous Dinner was not
   swept. The darkness rumble in Another Dimension has not been heard in a
   run yet.
-- Boss fights have been checked in The Arena (Goriath). The other bosses use
-  the same code, but haven't all been heard in a fight yet.
+- A test bot fought the bosses in The Arena by the mod's sounds (with the
+  Cutter ability) and beat all of them except Grand Doomer, which it reached
+  twice but couldn't finish. Every hit Kirby took was checked against what
+  the mod was playing: nearly all came from the boss itself or from a shot
+  that ticks. The fights haven't been heard by a player yet.
 - A key hasn't been carried to a gate in a test yet. Tell me if "Carrying
   key" or "Gate unlocked!" doesn't come.
 - The tile camera was tested with the keyboard. The right stick hasn't been

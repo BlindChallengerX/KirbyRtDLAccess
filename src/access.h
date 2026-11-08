@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdint.h>
 
-#define MOD_VERSION "0.8.6"
+#define MOD_VERSION "0.8.7"
 
 extern wchar_t g_game_dir[MAX_PATH];   /* folder of KirbyRecomp.exe, with trailing backslash */
 extern wchar_t g_mod_dir[MAX_PATH];    /* g_game_dir + "KirbyAccess\" */
@@ -22,6 +22,8 @@ void speakf(int interrupt, const char *fmt, ...);
 void speak_repeat(void);
 void speech_protect(DWORD ms);   /* queue interrupting game speech for ms (0 = stop) */
 void speech_stop(void);
+void speak_long(const char *text);       /* a boss description: said again after a keyboard key cuts it */
+void speech_long_tick(int vk_pressed, int any_down);
 
 /* guest.c: Wii memory.
  *

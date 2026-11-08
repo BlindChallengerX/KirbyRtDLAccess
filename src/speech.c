@@ -37,6 +37,7 @@ static fn_stop p_stop;
 static wchar_t g_last[2048];
 static volatile int g_speech_stop;
 static HANDLE g_speech_thread;
+static int g_keys_cut;   /* the backend is a screen reader that stops talking on a key press */
 
 static int start_prism(void) {
     wchar_t dll[MAX_PATH];
@@ -59,7 +60,10 @@ static int start_prism(void) {
     g_be = acquire_best(ctx);
     if (!g_be) { log_line("Prism found no screen reader or voice"); return 0; }
     if (initialize(g_be) != PRISM_OK) log_line("Prism backend initialize returned an error; trying anyway");
-    log_line("speech: Prism, speaking through %s", name ? name(g_be) : "?");
+    const char *bn = name ? name(g_be) : "?";
+    log_line("speech: Prism, speaking through %s", bn);
+    /* screen readers drop their speech on a keyboard key; voices (SAPI, OneCore) do not */
+    g_keys_cut = !strstr(bn, "SAPI") && !strstr(bn, "OneCore") && !strstr(bn, "Sapi");
     return 1;
 }
 
@@ -131,7 +135,8 @@ static void enqueue(const wchar_t *text, int interrupt, int stop) {
 /* While a long important line plays (a boss description), game events that would
  * interrupt it are queued after it instead. A key the player presses clears this. */
 static volatile DWORD s_protect_until;
-void speech_protect(DWORD ms) { s_protect_until = ms ? GetTickCount() + ms : 0; }
+static int s_ls_n;
+void speech_protect(DWORD ms) { s_protect_until = ms ? GetTickCount() + ms : 0; if (!ms) s_ls_n = 0; }
 void speak(const wchar_t *text, int interrupt) {
     if (!text || !*text) return;
     if (interrupt && (int)(s_protect_until - GetTickCount()) > 0) interrupt = 0;
@@ -157,3 +162,64 @@ void speakf(int interrupt, const char *fmt, ...) {
 
 void speak_repeat(void) { if (g_last[0]) enqueue(g_last, 1, 0); }
 void speech_stop(void) { enqueue(L"", 1, 1); }
+
+/* Long important text (boss descriptions) is sent a sentence at a time. A keyboard key
+ * makes the screen reader (NVDA) drop all speech, and Prism can't tell whether NVDA is
+ * still talking, so when keys have been quiet for 0.4 s the text is sent again from the
+ * sentence it had probably reached: the position is guessed at 13 characters a second, on
+ * the slow side, so a fast voice hears a little again rather than missing a part. Twice at
+ * most. Controller buttons never reach NVDA, so they don't cut it. */
+#define LS_MAX 32
+static char s_ls_text[2048]; static int s_ls_off[LS_MAX + 1];
+static DWORD s_ls_start, s_ls_end, s_ls_key, s_ls_sent; static int s_ls_redo;
+#define LS_CPS 13
+static void ls_send(int from) {
+    for (int i = from; i < s_ls_n; i++) {
+        char b[1024]; int L = s_ls_off[i + 1] - s_ls_off[i]; if (L > 1023) L = 1023;
+        memcpy(b, s_ls_text + s_ls_off[i], L); b[L] = 0;
+        speak_utf8(b, 0);
+    }
+    DWORD now = GetTickCount(); s_ls_sent = now;
+    s_ls_start = now - (DWORD)(s_ls_off[from] * 1000 / LS_CPS);
+    s_ls_end = s_ls_start + (DWORD)(s_ls_off[s_ls_n] * 1000 / LS_CPS) + 1500;
+    s_protect_until = s_ls_end;
+}
+void speak_long(const char *text) {
+    strncpy(s_ls_text, text, sizeof s_ls_text - 1); s_ls_text[sizeof s_ls_text - 1] = 0;
+    int n = 0, len = (int)strlen(s_ls_text);
+    s_ls_off[0] = 0;
+    for (int i = 0; i < len && n < LS_MAX - 1; i++) {
+        char c = s_ls_text[i];
+        if ((c == '.' || c == '!' || c == '?') && s_ls_text[i + 1] == ' ') {
+            if (c == '.' && i >= 2 && (!strncmp(s_ls_text + i - 2, "Mr", 2) || !strncmp(s_ls_text + i - 2, "Dr", 2) || !strncmp(s_ls_text + i - 2, "St", 2))) continue;   /* "Mr. Dooter" */
+            s_ls_off[++n] = i + 2;
+        }
+    }
+    if (s_ls_off[n] < len) n++;
+    s_ls_off[n] = len; s_ls_n = n; s_ls_redo = 0; s_ls_key = 0;
+    ls_send(0);
+}
+/* Called every 16 ms with the keyboard key that went down just now (0 for none) and
+ * whether any is held. Keys already held when the text started, or pressed in its first
+ * 0.3 s (the key that asked for it), don't count. */
+void speech_long_tick(int vk_pressed, int any_down) {
+    if (!s_ls_n) return;
+    DWORD now = GetTickCount();
+    if (!g_keys_cut) { if ((int)(now - s_ls_end) > 0) s_ls_n = 0; return; }
+    if (vk_pressed && now - s_ls_sent > 300 && ((int)(now - s_ls_end) < 0 || s_ls_key)) {
+        if (!s_ls_key) log_line("long speech: key %02x pressed", vk_pressed);
+        s_ls_key = now; return;
+    }
+    if (s_ls_key && any_down) { s_ls_key = now; return; }
+    if (s_ls_key && now - s_ls_key > 400) {
+        DWORD at = s_ls_key - s_ls_start; s_ls_key = 0;
+        if (s_ls_redo >= 2) { s_ls_n = 0; return; }
+        int ch = (int)(at * LS_CPS / 1000), from = 0;
+        for (int i = 0; i < s_ls_n; i++) if (s_ls_off[i] <= ch) from = i;
+        s_ls_redo++;
+        log_line("long speech cut by a key: again from sentence %d of %d", from + 1, s_ls_n);
+        ls_send(from);
+        return;
+    }
+    if (!s_ls_key && (int)(now - s_ls_end) > 0) s_ls_n = 0;
+}
