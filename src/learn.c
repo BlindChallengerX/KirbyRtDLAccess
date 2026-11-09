@@ -12,6 +12,7 @@
  * Gameplay sounds are silent while it is open.
  */
 #include "access.h"
+#include "stick.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -477,14 +478,14 @@ int learn_poll(void) {
         }
     }
     /* right stick on an XInput pad */
-    static int stick;
+    static Stick sk; static int pdx, pdy;   /* stick.h: a flick moves once, its spring-back is ignored */
     XINPUT_STATE st;
     for (DWORD p = 0; p < 4; p++) {
         if (XInputGetState(p, &st) != ERROR_SUCCESS) continue;
-        int rx = st.Gamepad.sThumbRX, ry = st.Gamepad.sThumbRY, dir = 0;
-        if (ry > 20000) dir = 1; else if (ry < -20000) dir = 2; else if (rx < -20000) dir = 3; else if (rx > 20000) dir = 4;
-        if (dir && !stick) { if (dir == 1) move(0, -1); else if (dir == 2) move(0, 1); else if (dir == 3) move(-1, 0); else move(1, 0); }
-        stick = dir;
+        int dx, dy;
+        stick_step(&sk, st.Gamepad.sThumbRX, st.Gamepad.sThumbRY, GetTickCount(), &dx, &dy);
+        if ((dx || dy) && (dx != pdx || dy != pdy)) { if (dy > 0) move(0, -1); else if (dy < 0) move(0, 1); else if (dx < 0) move(-1, 0); else move(1, 0); }
+        pdx = dx; pdy = dy;
         break;
     }
     return 1;

@@ -1,4 +1,4 @@
-Kirby Access 0.8.8
+Kirby Access 0.8.9
 
 A screen reader and audio mod for Kirby's Return to Dream Land on PC, using
 the Kirby Wii Recomp port (KirbyRecomp.exe, by ExpansionPak / ModernGekko).
@@ -191,8 +191,14 @@ the platforms are, how high a ledge is, how far a drop goes, or what is on
 the other side of a gap.
 
 Push the right stick (or press I, J, K or L) and the camera moves one tile
-up, left, down or right from Kirby and plays what is there. Hold it to keep
-moving. The camera moves with Kirby, so it always stays near him.
+up, left, down or right from Kirby and plays what is there. Each flick of
+the stick moves one tile, so you can flick through the tiles at your own
+pace; hold it to keep moving.
+
+The camera stays where you put it relative to Kirby, not to the stage. If
+you look 3 tiles to the right and then walk, it stays 3 tiles to the right
+of Kirby as he moves, so you can keep checking what is coming up ahead.
+Walking or jumping does not bring it back.
 
 While Kirby is in the air (floating, jumping or falling), the left stick
 moves the camera as well. Float in place with the d-pad and look around
@@ -202,10 +208,14 @@ with the left stick, so you can find the next platform before you drop.
                            2 up, thin platform". For an open tile it also
                            says how far down the ground is: "open, ground
                            2 below".
-  Right stick click or O   bring the camera back to Kirby. It also comes back
-                           by itself after 8 seconds.
+  Right stick click or O   bring the camera back to Kirby.
 
-While the camera is on Kirby, the stick clicks do their usual jobs.
+The camera comes back to Kirby in three ways: the right stick click (or O),
+8 seconds without moving the camera, or going through a door into a new
+area. For the click and the 8 seconds, a falling chirp tells you it has
+jumped back; a new area always starts with the camera on Kirby. While the
+camera is on Kirby, the stick clicks do their usual jobs (enemies, the way
+to the exit).
 
 The tile sounds:
   soft high tick        open air

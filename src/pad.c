@@ -23,15 +23,9 @@ static SHORT s_lx, s_ly, s_rx, s_ry;
 int kirby_in_air(void);
 int camera_away(void); void camera_say(void); void camera_home(void);
 
-/* A stick as one direction (the stronger axis), with a little hysteresis. */
-static void stick_dir(int rx, int ry, int *st, int *dx, int *dy) {
-    int on = (st[0] || st[1]) ? 14000 : 22000;
-    st[0] = st[1] = 0;
-    if (abs(rx) > on || abs(ry) > on) { if (abs(rx) >= abs(ry)) st[0] = rx > 0 ? 1 : -1; else st[1] = ry > 0 ? 1 : -1; }
-    *dx = st[0]; *dy = st[1];
-}
-void pad_right_stick(int *dx, int *dy) { static int st[2]; stick_dir(s_rx, s_ry, st, dx, dy); }
-void pad_left_stick(int *dx, int *dy) { static int st[2]; stick_dir(s_lx, s_ly, st, dx, dy); }
+#include "stick.h"
+void pad_right_stick(int *dx, int *dy) { static Stick st; stick_step(&st, s_rx, s_ry, GetTickCount(), dx, dy); }
+void pad_left_stick(int *dx, int *dy) { static Stick st; stick_step(&st, s_lx, s_ly, GetTickCount(), dx, dy); }
 
 int input_dir(void) {
     int d = 0;

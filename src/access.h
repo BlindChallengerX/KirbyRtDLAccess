@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdint.h>
 
-#define MOD_VERSION "0.8.8"
+#define MOD_VERSION "0.8.9"
 
 extern wchar_t g_game_dir[MAX_PATH];   /* folder of KirbyRecomp.exe, with trailing backslash */
 extern wchar_t g_mod_dir[MAX_PATH];    /* g_game_dir + "KirbyAccess\" */
