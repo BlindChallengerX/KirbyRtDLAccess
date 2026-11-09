@@ -21,6 +21,8 @@
 #include <stdarg.h>
 #include <wchar.h>
 #include <string.h>
+#include <wininet.h>
+#include <bcrypt.h>
 
 static wchar_t g_dir[MAX_PATH];
 static FILE *g_log;
@@ -165,6 +167,83 @@ static int read_line(const wchar_t *path, wchar_t *out, int cap) {
     return n > 0;
 }
 
+/* ---- the port, downloaded on first start ---- */
+#define PORT_PAGE L"https://github.com/ExpansionPak/ModernGekko/releases (release \"kirby\")"
+#define PORT_URL  L"https://github.com/ExpansionPak/ModernGekko/releases/download/kirby/KirbyWiiRecomp-Windows-x86_64.zip"
+static const char k_port_sha256[] = "4e6db092d9f94d5f135f30f551f324e8e3986583d26b59212cc326174f56d050";
+
+static void port_manual(const wchar_t *why) {
+    wchar_t m[1024];
+    swprintf(m, 1024, L"%ls\n\nYou can set it up yourself: download KirbyWiiRecomp-Windows-x86_64.zip from %ls, "
+                      L"and unzip everything inside its KirbyWiiRecomp folder into this folder, next to Play Kirby Access.exe. Then start Play Kirby Access again.", why, PORT_PAGE);
+    fail(m);
+}
+
+/* Download to zip, hashing as it goes; a short tick for every tenth. */
+static int port_download(const wchar_t *zip, char *hex) {
+    int ok = 0;
+    HINTERNET net = InternetOpenW(L"KirbyAccess-launcher", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+    HINTERNET url = net ? InternetOpenUrlW(net, PORT_URL, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE, 0) : NULL;
+    FILE *f = url ? _wfopen(zip, L"wb") : NULL;
+    BCRYPT_ALG_HANDLE alg = NULL; BCRYPT_HASH_HANDLE h = NULL;
+    if (f && BCryptOpenAlgorithmProvider(&alg, BCRYPT_SHA256_ALGORITHM, NULL, 0) == 0 && BCryptCreateHash(alg, &h, NULL, 0, NULL, 0, 0) == 0) {
+        DWORD total = 0, len = sizeof total, idx = 0, got = 0, done = 0; int tenth = 0;
+        HttpQueryInfoW(url, HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER, &total, &len, &idx);
+        static unsigned char buf[1 << 16];
+        for (;;) {
+            if (!InternetReadFile(url, buf, sizeof buf, &got)) { logw(L"download read failed (%lu)", GetLastError()); break; }
+            if (!got) { ok = 1; break; }
+            fwrite(buf, 1, got, f); BCryptHashData(h, buf, got, 0); done += got;
+            if (total && (int)((unsigned long long)done * 10 / total) > tenth) { tenth = (int)((unsigned long long)done * 10 / total); Beep(400 + 60 * tenth, 60); }
+        }
+        logw(L"downloaded %lu of %lu bytes", done, total);
+        unsigned char dig[32];
+        if (ok && BCryptFinishHash(h, dig, 32, 0) == 0) for (int i = 0; i < 32; i++) sprintf(hex + 2 * i, "%02x", dig[i]);
+        else ok = 0;
+    } else logw(L"download could not start (%lu)", GetLastError());
+    if (h) BCryptDestroyHash(h);
+    if (alg) BCryptCloseAlgorithmProvider(alg, 0);
+    if (f) fclose(f);
+    if (url) InternetCloseHandle(url);
+    if (net) InternetCloseHandle(net);
+    return ok;
+}
+
+static int install_port(void) {
+    if (MessageBoxW(NULL, L"Kirby Access needs the Kirby Wii Recomp game program, made by ExpansionPak and ModernGekko. It is not in this folder yet.\n\n"
+                          L"Download it now from its official GitHub page? It is about 42 MB. You will hear a short rising tick for every tenth, and a message when it is ready.",
+                    L"Kirby Access", MB_YESNO | MB_ICONQUESTION) != IDYES) {
+        port_manual(L"Kirby Wii Recomp was not downloaded.");
+        return 0;
+    }
+    wchar_t zip[MAX_PATH], here[MAX_PATH], tar[MAX_PATH], sysroot[MAX_PATH], line[4 * MAX_PATH];
+    swprintf(zip, MAX_PATH, L"%lsKirbyWiiRecomp-download.zip", g_dir);
+    wcsncpy(here, g_dir, MAX_PATH); here[wcslen(here) - 1] = 0;   /* no trailing backslash: it would escape the quote */
+    char hex[65] = "";
+    logw(L"downloading the port from %ls", PORT_URL);
+    if (!port_download(zip, hex)) { DeleteFileW(zip); port_manual(L"The download failed. Check your internet connection."); return 0; }
+    if (strcmp(hex, k_port_sha256)) {
+        logw(L"port download hash %hs, expected %hs", hex, k_port_sha256);
+        DeleteFileW(zip);
+        port_manual(L"The downloaded file is not the Kirby Wii Recomp version this mod was tested with (the release may have been updated).");
+        return 0;
+    }
+    GetEnvironmentVariableW(L"SystemRoot", sysroot, MAX_PATH);
+    swprintf(tar, MAX_PATH, L"%ls\\System32\\tar.exe", sysroot);
+    swprintf(line, sizeof line / sizeof *line, L"\"%ls\" -xf \"%ls\" --strip-components=2 -C \"%ls\"", tar, zip, here);
+    STARTUPINFOW si = { sizeof si }; PROCESS_INFORMATION pi; DWORD code = 1;
+    if (CreateProcessW(tar, line, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, here, &si, &pi)) {
+        WaitForSingleObject(pi.hProcess, 600000); GetExitCodeProcess(pi.hProcess, &code);
+        CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    }
+    logw(L"unzipped the port: tar exit %lu", code);
+    DeleteFileW(zip);
+    wchar_t exe[MAX_PATH]; swprintf(exe, MAX_PATH, L"%lsKirbyRecomp.exe", g_dir);
+    if (code != 0 || GetFileAttributesW(exe) == INVALID_FILE_ATTRIBUTES) { port_manual(L"The download could not be unzipped."); return 0; }
+    MessageBoxW(NULL, L"Kirby Wii Recomp is installed. Next, Kirby Access sets up the game from your disc image.", L"Kirby Access", MB_OK | MB_ICONINFORMATION);
+    return 1;
+}
+
 int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmd, int show) {
     (void)inst; (void)prev; (void)show;
     GetModuleFileNameW(NULL, g_dir, MAX_PATH);
@@ -175,7 +254,7 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmd, int show) {
     swprintf(dll, MAX_PATH, L"%lsKirbyAccess\\KirbyAccess.dll", g_dir);
     swprintf(logp, MAX_PATH, L"%lsKirbyAccess\\launch.log", g_dir);
     g_log = _wfopen(logp, L"a");
-    if (GetFileAttributesW(exe) == INVALID_FILE_ATTRIBUTES) { fail(L"KirbyRecomp.exe was not found next to this program. Put Play Kirby Access.exe and the KirbyAccess folder in the Kirby Wii Recomp folder."); return 1; }
+    if (GetFileAttributesW(exe) == INVALID_FILE_ATTRIBUTES && !install_port()) return 1;
     if (GetFileAttributesW(dll) == INVALID_FILE_ATTRIBUTES) { fail(L"KirbyAccess\\KirbyAccess.dll is missing."); return 1; }
 
     wchar_t local[MAX_PATH];

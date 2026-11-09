@@ -1,4 +1,4 @@
-Kirby Access 0.8.7
+Kirby Access 0.8.8
 
 A screen reader and audio mod for Kirby's Return to Dream Land on PC, using
 the Kirby Wii Recomp port (KirbyRecomp.exe, by ExpansionPak / ModernGekko).
@@ -59,25 +59,33 @@ Spheres, Super Ability rifts and how to beat each boss.
 2. WHAT YOU NEED AND INSTALLING
 
 You need:
-- The Kirby Wii Recomp port for Windows (KirbyWiiRecomp-Windows-x86_64.zip
-  from https://github.com/ExpansionPak/ModernGekko/releases, release "kirby").
 - Your own copy of Kirby's Return to Dream Land, USA version (SUKE01), as a
   .wbfs or .iso file.
+- An internet connection the first time, to download the game program.
 
 To install:
-1. Unzip the port. Keep all its files together in one folder.
-2. Copy "Play Kirby Access.exe" and the KirbyAccess folder from this zip into
-   that same folder, next to KirbyRecomp.exe. The readme and the stage guide
-   can go anywhere.
-3. From now on, start "Play Kirby Access.exe" instead of KirbyWiiRecomp.exe.
+1. Unzip this zip into a folder of its own, for example Documents\Kirby.
+2. Start "Play Kirby Access.exe" in that folder.
 
-The first time, Play Kirby Access sets the game up for you. It looks for
-your disc image (a .wbfs or .iso with "Kirby" in its name) in the port folder
-and in your Downloads folder, tells you before it starts, and asks the port
-to copy the game from it. This takes a minute or two. It also lets the port
-set up your controller, and turns off the frames-per-second count in the
-window title so your screen reader doesn't keep reading it. After that, the
-game starts straight away.
+The first time, Play Kirby Access asks to download Kirby Wii Recomp, the PC
+port the mod runs on (by ExpansionPak and ModernGekko, about 42 MB, from
+its official GitHub release). Press Yes. You hear a short rising tick for
+every tenth of the download, then a message when it is installed. The mod
+checks that the file is exactly the version it was tested with. Kirby Wii
+Recomp is a test release itself and has its own bugs.
+
+If you already have Kirby Wii Recomp, you can instead copy "Play Kirby
+Access.exe" and the KirbyAccess folder into its folder, next to
+KirbyRecomp.exe. Either way, always start "Play Kirby Access.exe" instead of
+KirbyWiiRecomp.exe.
+
+The first time, Play Kirby Access sets the game up for you. It looks for your
+disc image (a .wbfs or .iso with "Kirby" in its name) in the same folder and
+in your Downloads folder, tells you before it starts, and asks the port to
+copy the game from it. This takes a minute or two. It also lets the port set
+up your controller, and turns off the frames-per-second count in the window
+title so your screen reader doesn't keep reading it. After that, the game
+starts straight away.
 
 A few seconds after the window opens you should hear "Kirby Access loaded.
 Press F1 for keys." If something goes wrong, the KirbyAccess folder has two

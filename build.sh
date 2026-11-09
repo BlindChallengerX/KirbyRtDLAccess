@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 [ -n "$W64DEVKIT" ] && export PATH="$W64DEVKIT/bin:$PATH"
 MH=third_party/minhook
 mkdir -p out/KirbyAccess
-gcc -O2 -Wall -s -mwindows -municode -o "out/Play Kirby Access.exe" src/launch.c -static-libgcc
+gcc -O2 -Wall -s -mwindows -municode -o "out/Play Kirby Access.exe" src/launch.c -static-libgcc -lwininet -lbcrypt
 gcc -O2 -Wall -Wno-unused-function -Wno-format-truncation -shared -s -o out/KirbyAccess/KirbyAccess.dll \
   src/dllmain.c src/speech.c src/guest.c src/audio.c src/game.c src/scene.c src/play.c src/objects.c src/gimmicks.c src/abilities.c src/areas.c src/text.c src/msg.c src/movie.c src/learn.c src/pad.c src/tools.c $EXTRA \
   $MH/src/hook.c $MH/src/buffer.c $MH/src/trampoline.c $MH/src/hde/hde64.c \

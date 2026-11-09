@@ -9,4 +9,4 @@ Download the zip from [Releases](../../releases). Everything about installing an
 playing is in [README.txt](README.txt). [Kirby Stage Guide.txt](Kirby%20Stage%20Guide.txt)
 is an optional, spoiler-filled guide for when you get stuck.
 
-You need your own copy of the game (USA, SUKE01) as a .wbfs or .iso.
+You need your own copy of the game (USA, SUKE01) as a .wbfs or .iso. On first start, Play Kirby Access offers to download the Kirby Wii Recomp port from its official release and checks it against the version the mod was tested with; the port is not included here.
