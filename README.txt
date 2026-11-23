@@ -1,4 +1,4 @@
-Kirby Access 0.8.9
+Kirby Access 0.8.10
 
 A screen reader and audio mod for Kirby's Return to Dream Land on PC, using
 the Kirby Wii Recomp port (KirbyRecomp.exe, by ExpansionPak / ModernGekko).
@@ -86,6 +86,11 @@ copy the game from it. This takes a minute or two. It also lets the port set
 up your controller, and turns off the frames-per-second count in the window
 title so your screen reader doesn't keep reading it. After that, the game
 starts straight away.
+
+Each time it starts it also takes any extension (a Nunchuk or Classic
+Controller) off the Wii Remote in the port's controller settings. Kirby only
+takes the Wii Remote on its own; with an extension the title screen stops on
+"Please disconnect the unsupported external extension controller".
 
 A few seconds after the window opens you should hear "Kirby Access loaded.
 Press F1 for keys." If something goes wrong, the KirbyAccess folder has two

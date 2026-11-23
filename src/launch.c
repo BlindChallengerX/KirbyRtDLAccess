@@ -71,6 +71,60 @@ static void fps_title_off(const wchar_t *user) {
     logw(L"turned off the FPS display in the window title");
 }
 
+/* Kirby only takes a Wii Remote on its own. If the port's controller profile
+ * attaches an extension (Nunchuk, Classic Controller...), the title screen
+ * stops on "Please disconnect the unsupported external extension controller
+ * from the Wii Remote." Set every "Extension = ..." line to None. */
+static void no_extension(const wchar_t *user) {
+    wchar_t ini[MAX_PATH];
+    swprintf(ini, MAX_PATH, L"%ls/Config/WiimoteNew.ini", user);
+    FILE *f = _wfopen(ini, L"rb");
+    if (!f) return;
+    static char buf[65536], out[65536 + 4096];
+    size_t n = fread(buf, 1, sizeof buf - 1, f); fclose(f);
+    if (n == sizeof buf - 1) return;               /* not a profile we know */
+    buf[n] = 0;
+    size_t o = 0; int changed = 0;
+    for (char *p = buf; *p; ) {
+        char *eol = strchr(p, '\n');
+        size_t len = eol ? (size_t)(eol - p + 1) : strlen(p);
+        char *q = p;
+        int key = strncmp(q, "Extension", 9) == 0;
+        if (key) { q += 9; while (*q == ' ' || *q == '\t') q++; key = *q == '='; }
+        if (key) {
+            q++; while (*q == ' ' || *q == '\t') q++;
+            if (strncmp(q, "None", 4) != 0) {
+                const char *nl = (eol && eol > p && eol[-1] == '\r') ? "\r\n" : "\n";
+                o += (size_t)sprintf(out + o, "Extension = None%s", eol ? nl : "");
+                changed = 1;
+                p += len;
+                continue;
+            }
+        }
+        memcpy(out + o, p, len); o += len; p += len;
+    }
+    if (!changed) return;
+    f = _wfopen(ini, L"wb");
+    if (!f) return;
+    fwrite(out, 1, o, f);
+    fclose(f);
+    logw(L"removed the Wii Remote extension from the controller profile (the game only takes a Wii Remote on its own)");
+}
+
+/* The folder after --user-dir on the command line, quoted or not. */
+static int user_dir_arg(const wchar_t *cmd, wchar_t *out) {
+    const wchar_t *p = cmd ? wcsstr(cmd, L"--user-dir") : NULL;
+    if (!p) return 0;
+    p += 10;
+    while (*p == L' ') p++;
+    wchar_t end = L' ';
+    if (*p == L'"') { end = L'"'; p++; }
+    int i = 0;
+    while (*p && *p != end && i < MAX_PATH - 1) out[i++] = *p++;
+    out[i] = 0;
+    return i > 0;
+}
+
 /* First .wbfs or .iso in dir (non-recursive, one level of subfolders). */
 static int find_disc(const wchar_t *dir, wchar_t *out, int depth) {
     static const wchar_t *const pats[] = { L"*.wbfs", L"*.iso" };
@@ -280,6 +334,8 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmd, int show) {
     }
 
     if (!(cmd && wcsstr(cmd, L"--user-dir"))) { ensure_profile(user); fps_title_off(user); }
+    wchar_t used[MAX_PATH];
+    no_extension(user_dir_arg(cmd, used) ? used : user);
 
     wchar_t line[4 * MAX_PATH + 512];
     if (cmd && wcsstr(cmd, L"--user-dir"))
