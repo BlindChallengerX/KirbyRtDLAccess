@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdint.h>
 
-#define MOD_VERSION "0.8.10"
+#define MOD_VERSION "0.8.11"
 
 extern wchar_t g_game_dir[MAX_PATH];   /* folder of KirbyRecomp.exe, with trailing backslash */
 extern wchar_t g_mod_dir[MAX_PATH];    /* g_game_dir + "KirbyAccess\" */
@@ -13,6 +13,8 @@ void log_line(const char *fmt, ...);
 char *to_utf8(const wchar_t *w);       /* malloc'd; caller frees */
 wchar_t *from_utf8(const char *s);     /* malloc'd; caller frees */
 int game_has_focus(void);
+extern int g_kbd_profile;             /* the launcher wrote its keyboard profile (no controller found) */
+void profile_init(void);
 
 /* speech.c */
 void speech_init(void);

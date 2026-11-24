@@ -264,6 +264,7 @@ void startup_poll(void) {
         }
     } else if (s_title && !s_said_title) {
         s_said_title = 1;
-        speak(L"Kirby's Return to Dream Land. Title screen. Press 2 to start: the A button on a controller.", 1);
+        speak(g_kbd_profile ? L"Kirby's Return to Dream Land. Title screen. Press 2 to start: the A key."
+                            : L"Kirby's Return to Dream Land. Title screen. Press 2 to start: the A button on a controller.", 1);
     }
 }

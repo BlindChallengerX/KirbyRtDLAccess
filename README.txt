@@ -87,10 +87,21 @@ up your controller, and turns off the frames-per-second count in the window
 title so your screen reader doesn't keep reading it. After that, the game
 starts straight away.
 
+If the port finds no controller, Play Kirby Access sets you up to play on the
+keyboard instead (keys in section 3). If you plug in a controller later, the
+next start notices it and the port sets it up.
+
 Each time it starts it also takes any extension (a Nunchuk or Classic
 Controller) off the Wii Remote in the port's controller settings. Kirby only
 takes the Wii Remote on its own; with an extension the title screen stops on
 "Please disconnect the unsupported external extension controller".
+
+Updates: each time it starts, Play Kirby Access checks GitHub for a newer
+Kirby Access. If there is one, a box tells you what's new and asks: Yes
+updates now (a few seconds, then the game starts and the mod says "Kirby
+Access updated to version ..."), No asks again next time, Cancel skips that
+version. Your settings stay as they are. Without internet it just starts the
+game.
 
 A few seconds after the window opens you should hear "Kirby Access loaded.
 Press F1 for keys." If something goes wrong, the KirbyAccess folder has two
@@ -112,6 +123,21 @@ The port maps a Wii Remote held sideways onto an Xbox controller:
 
 The left stick is not used; move with the d-pad. The mod uses the right
 stick for the tile camera, and the left stick too while Kirby is in the air.
+
+On the keyboard (when no controller was found), the letter keys match the
+controller's buttons, so the mod's move lists work for both:
+
+  Arrow keys     move. Up enters doors, down crouches and slides.
+  A              jump (the Wii Remote's 2 button); hold or press again to float
+  X              inhale, attack, use your copy ability (the 1 button)
+  Q              the Wii Remote's A button (guard; Energy Spheres on the world map)
+  E              the Wii Remote's B button
+  Z              shake the remote (Super Abilities, dropping an ability)
+  Tab            minus: drop your ability
+  Enter          plus: pause menu
+
+With the keyboard, the mod's move lists say Q, Z, Tab and "the arrow keys"
+instead of the controller's names.
 
 
 4. MOD KEYS

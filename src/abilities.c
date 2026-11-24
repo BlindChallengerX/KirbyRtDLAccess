@@ -14,6 +14,8 @@
  * triggers shake it, Back is minus.
  */
 #include "access.h"
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
 #include "moves.inc"
@@ -51,5 +53,31 @@ static const char *const k_summary[30] = {
     /* 29 Snow Bowl */ "A Super Ability, for a short time. Press X to become a giant snowball that rolls along flattening everything; A jumps.",
 };
 
-const char *ability_summary(uint32_t k) { return k < 30 ? k_summary[k] : ""; }
-const char *ability_moves(uint32_t k) { return k < 30 ? k_moves[k] : ""; }
+/* With the launcher's keyboard profile the X and A keys are the X and A
+ * buttons; the other controller words become their keys. */
+static const char *kbd_words(const char *s, char **cache) {
+    static const char *const rep[][2] = {
+        { "shake (a trigger)", "shake (Z)" }, { "with a trigger", "with Z" }, { "a trigger", "Z" },
+        { "Left bumper", "Q" }, { "left bumper", "Q" },
+        { "Ability: Back.", "Ability: Tab." }, { "then Back.", "then Tab." }, { "press Back", "press Tab" },
+        { "the d-pad", "the arrow keys" },
+    };
+    if (!g_kbd_profile || !*s) return s;
+    if (*cache) return *cache;
+    char *o = malloc(strlen(s) * 2 + 16);
+    if (!o) return s;
+    size_t n = 0;
+    while (*s) {
+        size_t i;
+        for (i = 0; i < sizeof rep / sizeof rep[0]; i++) {
+            size_t l = strlen(rep[i][0]);
+            if (!strncmp(s, rep[i][0], l)) { strcpy(o + n, rep[i][1]); n += strlen(rep[i][1]); s += l; break; }
+        }
+        if (i == sizeof rep / sizeof rep[0]) o[n++] = *s++;
+    }
+    o[n] = 0;
+    return *cache = o;
+}
+
+const char *ability_summary(uint32_t k) { static char *c[30]; return k < 30 ? kbd_words(k_summary[k], &c[k]) : ""; }
+const char *ability_moves(uint32_t k) { static char *c[30]; return k < 30 ? kbd_words(k_moves[k], &c[k]) : ""; }

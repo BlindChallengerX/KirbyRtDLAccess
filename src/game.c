@@ -19,6 +19,8 @@
 #include "access.h"
 #include <stdio.h>
 #include <string.h>
+#include <wchar.h>
+#include <shellapi.h>
 
 extern volatile int g_walls_on, g_radar_on, g_route_on, g_ground_on;
 void play_poll(void);
@@ -43,15 +45,37 @@ static void toggle(volatile int *v, const char *what) {
     if (!*v) hum_all_off();
 }
 
+/* Which controller profile the game runs with: the launcher's keyboard one
+ * carries a mark line (see launch.c). */
+int g_kbd_profile;
+void profile_init(void) {
+    int argc; wchar_t **argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+    wchar_t ini[MAX_PATH] = L"";
+    for (int i = 0; argv && i + 1 < argc; i++)
+        if (!wcscmp(argv[i], L"--user-dir")) swprintf(ini, MAX_PATH, L"%ls/Config/WiimoteNew.ini", argv[i + 1]);
+    if (argv) LocalFree(argv);
+    FILE *f = ini[0] ? _wfopen(ini, L"rb") : NULL;
+    if (!f) return;
+    char buf[8192]; size_t n = fread(buf, 1, sizeof buf - 1, f); fclose(f);
+    buf[n] = 0;
+    g_kbd_profile = strstr(buf, "KirbyAccess = keyboard profile") != NULL;
+    log_line("controller profile: %s", g_kbd_profile ? "keyboard (written by the launcher)" : "the port's");
+}
+
 void game_key(int vk, int shift, int ctrl) {
     speech_protect(0);   /* the player asked for something: say it now */
     switch (vk) {
-    case VK_F1:
-        speak(L"Kirby Access keys. F2 enemies, Shift F2 items, Control F2 what the boss does. F3 health and ability, Shift F3 the ability's moves. F4 the way to the exit. F5 walls and ground ahead, Shift F5 where you are, Control F5 stage hints on or off, Control Shift F5 the hint again. "
+    case VK_F1: {
+        static wchar_t help[2048];
+        swprintf(help, 2048, L"Kirby Access keys. F2 enemies, Shift F2 items, Control F2 what the boss does. F3 health and ability, Shift F3 the ability's moves. F4 the way to the exit. F5 walls and ground ahead, Shift F5 where you are, Control F5 stage hints on or off, Control Shift F5 the hint again. "
               L"F6 wall hums on or off, F9 enemy count on or off, Shift F6 enemy sounds, Control F6 route tones. F7 and F8 mod volume. F11 learn sounds. F12 repeat. "
+              L"%ls"
               L"On a controller: left stick click enemies, right stick click the way, both together status. "
-              L"Tile camera: push the right stick, or press I J K L, to look one tile at a time around Kirby and hear what is there. While Kirby is in the air, the left stick moves the camera too. U, or the left stick click, says the tile; O, or the right stick click, brings the camera back to Kirby. It also comes back by itself after 8 seconds.", 1);
+              L"Tile camera: push the right stick, or press I J K L, to look one tile at a time around Kirby and hear what is there. While Kirby is in the air, the left stick moves the camera too. U, or the left stick click, says the tile; O, or the right stick click, brings the camera back to Kirby. It also comes back by itself after 8 seconds.",
+                 g_kbd_profile ? L"Game keys: arrows move, up enters doors. A jumps and floats. X inhales and attacks. Q guards, it is the Wii Remote's A button; E is its B button. Z shakes the remote. Tab drops your ability. Enter pauses. " : L"");
+        speak(help, 1);
         break;
+    }
     case VK_F2: if (shift) play_say_items(); else if (ctrl) play_say_boss(); else play_say_enemies(); break;
     case VK_F3: if (shift) play_say_moves(); else play_say_status(); break;
     case VK_F4: play_say_route(); break;

@@ -73,9 +73,17 @@ static DWORD WINAPI mod_thread(LPVOID unused) {
         return 0;
     }
     while (!guest_ready()) Sleep(50);
+    profile_init();
     msg_init();
     game_init();
-    speak(L"Kirby Access loaded. Press F1 for keys.", 0);
+    {   /* the launcher just updated the mod: say so once */
+        wchar_t up[MAX_PATH]; char v[32] = "";
+        swprintf(up, MAX_PATH, L"%lsupdated.txt", g_mod_dir);
+        FILE *f = _wfopen(up, L"r");
+        if (f) { if (!fgets(v, sizeof v, f)) v[0] = 0; fclose(f); DeleteFileW(up); v[strcspn(v, "\r\n")] = 0; }
+        if (v[0]) { log_line("updated to %s", v); speakf(0, "Kirby Access updated to version %s. Press F1 for keys.", v); }
+        else speak(L"Kirby Access loaded. Press F1 for keys.", 0);
+    }
     int down[NKEYS] = { 0 };
     for (;;) {
         Sleep(16);

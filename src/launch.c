@@ -23,6 +23,10 @@
 #include <string.h>
 #include <wininet.h>
 #include <bcrypt.h>
+#include <mmsystem.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include "access.h"   /* MOD_VERSION */
 
 static wchar_t g_dir[MAX_PATH];
 static FILE *g_log;
@@ -171,23 +175,136 @@ static int extract_disc(const wchar_t *disc) {
     return 1;
 }
 
+/* Keyboard profile, written when the port's launcher finds no controller it
+ * knows (it writes nothing then, and the game falls back to Dolphin's own
+ * defaults, which attach a Nunchuk: "Please disconnect the unsupported
+ * external extension controller"). The letter keys match the controller's
+ * button names so the mod's move lists stay right: X key = X button (the Wii
+ * Remote's 1), A key = A button (its 2). Q and E are the bumpers (Wii A, B),
+ * Z the triggers (shake), Tab is Back (minus), Enter is Start (plus).
+ * The last line marks it as ours; the number is how many controllers Windows
+ * saw when it was written, so a controller plugged in later gets the port's
+ * own profile on the next start. */
+#define KBD_MARK "KirbyAccess = keyboard profile, controllers "
+static const char k_kbd_profile[] =
+    "[Wiimote1]\r\n"
+    "Device = DInput/0/Keyboard Mouse\r\n"
+    "Buttons/A = `Q`\r\n"
+    "Buttons/B = `E`\r\n"
+    "Buttons/1 = `X`\r\n"
+    "Buttons/2 = `A`\r\n"
+    "Buttons/- = `TAB`\r\n"
+    "Buttons/+ = `RETURN`\r\n"
+    "Buttons/Home = `H`\r\n"
+    "D-Pad/Up = `UP`\r\n"
+    "D-Pad/Down = `DOWN`\r\n"
+    "D-Pad/Left = `LEFT`\r\n"
+    "D-Pad/Right = `RIGHT`\r\n"
+    "IR/Up = `Cursor Y-`\r\n"
+    "IR/Down = `Cursor Y+`\r\n"
+    "IR/Left = `Cursor X-`\r\n"
+    "IR/Right = `Cursor X+`\r\n"
+    "Shake/X = `Z`\r\n"
+    "Shake/Y = `Z`\r\n"
+    "Shake/Z = `Z`\r\n"
+    "Extension = None\r\n"
+    "Options/Sideways Wiimote = True\r\n";
+
+/* Game controllers Windows sees right now (XInput pads and DirectInput ones). */
+static int controllers(void) {
+    int n = 0;
+    for (UINT i = 0; i < 16; i++) {
+        JOYINFOEX ji = { sizeof ji, JOY_RETURNBUTTONS };
+        if (joyGetPosEx(i, &ji) == JOYERR_NOERROR) n++;
+    }
+    return n;
+}
+
+/* -1 if the profile is not our keyboard one, else the controller count in its mark. */
+static int kbd_profile_count(const wchar_t *ini) {
+    FILE *f = _wfopen(ini, L"rb");
+    if (!f) return -1;
+    char buf[8192]; size_t n = fread(buf, 1, sizeof buf - 1, f); fclose(f);
+    buf[n] = 0;
+    char *m = strstr(buf, KBD_MARK);
+    return m ? atoi(m + sizeof KBD_MARK - 1) : -1;
+}
+
+/* The port's own config.ini names the input device too ("[Input]
+ * controller1=..."); with no controller it is left empty and the game reads
+ * no keys at all. Set it to dev, or remove it when dev is NULL. */
+#define KBD_DEVICE "DInput/0/Keyboard Mouse"
+static void set_controller1(const wchar_t *user, const char *dev) {
+    wchar_t ini[MAX_PATH];
+    swprintf(ini, MAX_PATH, L"%ls/config.ini", user);
+    static char buf[16384], out[16384 + 256];
+    size_t n = 0;
+    FILE *f = _wfopen(ini, L"rb");
+    if (f) { n = fread(buf, 1, sizeof buf - 1, f); fclose(f); if (n == sizeof buf - 1) return; }
+    buf[n] = 0;
+    const char *nl = strstr(buf, "\r\n") || !n ? "\r\n" : "\n";
+    size_t o = 0; int put = 0;
+    for (char *p = buf; *p; ) {
+        char *eol = strchr(p, '\n');
+        size_t len = eol ? (size_t)(eol - p + 1) : strlen(p);
+        if (strncmp(p, "controller1=", 12) != 0) {
+            memcpy(out + o, p, len); o += len;
+            if (!eol) o += (size_t)sprintf(out + o, "%s", nl);
+            if (dev && !put && !strncmp(p, "[Input]", 7)) { o += (size_t)sprintf(out + o, "controller1=%s%s", dev, nl); put = 1; }
+        }
+        p += len;
+    }
+    if (dev && !put) o += (size_t)sprintf(out + o, "[Input]%scontroller1=%s%s", nl, dev, nl);
+    f = _wfopen(ini, L"wb");
+    if (!f) return;
+    fwrite(out, 1, o, f);
+    fclose(f);
+}
+
+static void write_kbd_profile(const wchar_t *user, const wchar_t *ini, int pads) {
+    wchar_t dir[MAX_PATH];
+    swprintf(dir, MAX_PATH, L"%ls/Config", user);
+    CreateDirectoryW(user, NULL); CreateDirectoryW(dir, NULL);
+    FILE *f = _wfopen(ini, L"wb");
+    if (!f) { logw(L"could not write the keyboard profile"); return; }
+    fputs(k_kbd_profile, f);
+    fprintf(f, KBD_MARK "%d\r\n", pads);
+    fclose(f);
+    set_controller1(user, KBD_DEVICE);
+    logw(L"no controller profile from the port (%d controller%ls seen by Windows): wrote a keyboard profile", pads, pads == 1 ? L"" : L"s");
+}
+
 /* The port's launcher writes the controller profile (a sideways Wii Remote on
- * the connected pad) when it opens. If there is no profile yet, open it
- * minimized until the file appears, then close it. */
+ * the connected pad) when it opens and sees a controller. If there is no
+ * profile yet, or ours is there and a new controller has been plugged in,
+ * open it minimized until the file appears, then close it. If it writes
+ * nothing, write the keyboard profile. */
 static void ensure_profile(const wchar_t *user) {
     wchar_t ini[MAX_PATH], exe[MAX_PATH];
     swprintf(ini, MAX_PATH, L"%ls/Config/WiimoteNew.ini", user);
-    if (GetFileAttributesW(ini) != INVALID_FILE_ATTRIBUTES) return;
+    int pads = -1;
+    if (GetFileAttributesW(ini) != INVALID_FILE_ATTRIBUTES) {
+        int had = kbd_profile_count(ini);
+        if (had < 0) return;                       /* the port's (or the player's own) profile */
+        pads = controllers();
+        if (pads <= had) { set_controller1(user, KBD_DEVICE); return; }   /* no new controller: keep the keyboard */
+        logw(L"a controller was plugged in since the keyboard profile was written: asking the port to set it up");
+        DeleteFileW(ini);
+        set_controller1(user, NULL);
+    }
+    if (pads < 0) pads = controllers();
     swprintf(exe, MAX_PATH, L"%lsKirbyWiiRecomp.exe", g_dir);
     STARTUPINFOW si = { sizeof si };
     si.dwFlags = STARTF_USESHOWWINDOW; si.wShowWindow = SW_SHOWMINNOACTIVE;
     PROCESS_INFORMATION pi;
-    if (!CreateProcessW(exe, NULL, NULL, NULL, FALSE, 0, NULL, g_dir, &si, &pi)) return;
-    for (int i = 0; i < 100 && GetFileAttributesW(ini) == INVALID_FILE_ATTRIBUTES; i++) Sleep(100);
-    Sleep(300);
-    TerminateProcess(pi.hProcess, 0);
-    CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
-    logw(L"controller profile %ls", GetFileAttributesW(ini) != INVALID_FILE_ATTRIBUTES ? L"written" : L"not written");
+    if (CreateProcessW(exe, NULL, NULL, NULL, FALSE, 0, NULL, g_dir, &si, &pi)) {
+        for (int i = 0; i < 100 && GetFileAttributesW(ini) == INVALID_FILE_ATTRIBUTES; i++) Sleep(100);
+        Sleep(300);
+        TerminateProcess(pi.hProcess, 0);
+        CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    }
+    if (GetFileAttributesW(ini) != INVALID_FILE_ATTRIBUTES) logw(L"controller profile written by the port");
+    else write_kbd_profile(user, ini, pads);
 }
 
 static int load_mod(HANDLE proc, const wchar_t *dll) {
@@ -233,11 +350,23 @@ static void port_manual(const wchar_t *why) {
     fail(m);
 }
 
-/* Download to zip, hashing as it goes; a short tick for every tenth. */
-static int port_download(const wchar_t *zip, char *hex) {
+/* An open request for src (https, or http for the updater test server). */
+static HINTERNET open_url(HINTERNET *net, const wchar_t *src, DWORD timeout_ms, const wchar_t *headers) {
+    *net = InternetOpenW(L"KirbyAccess-launcher", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+    if (!*net) return NULL;
+    if (timeout_ms) {
+        InternetSetOptionW(*net, INTERNET_OPTION_CONNECT_TIMEOUT, &timeout_ms, sizeof timeout_ms);
+        InternetSetOptionW(*net, INTERNET_OPTION_RECEIVE_TIMEOUT, &timeout_ms, sizeof timeout_ms);
+    }
+    DWORD fl = INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE | (wcsncmp(src, L"https:", 6) ? 0 : INTERNET_FLAG_SECURE);
+    return InternetOpenUrlW(*net, src, headers, headers ? (DWORD)-1 : 0, fl, 0);
+}
+
+/* Download src to zip, hashing as it goes; a short tick for every tenth. */
+static int download(const wchar_t *src, const wchar_t *zip, char *hex) {
     int ok = 0;
-    HINTERNET net = InternetOpenW(L"KirbyAccess-launcher", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-    HINTERNET url = net ? InternetOpenUrlW(net, PORT_URL, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE, 0) : NULL;
+    HINTERNET net = NULL;
+    HINTERNET url = open_url(&net, src, 0, NULL);
     FILE *f = url ? _wfopen(zip, L"wb") : NULL;
     BCRYPT_ALG_HANDLE alg = NULL; BCRYPT_HASH_HANDLE h = NULL;
     if (f && BCryptOpenAlgorithmProvider(&alg, BCRYPT_SHA256_ALGORITHM, NULL, 0) == 0 && BCryptCreateHash(alg, &h, NULL, 0, NULL, 0, 0) == 0) {
@@ -275,7 +404,7 @@ static int install_port(void) {
     wcsncpy(here, g_dir, MAX_PATH); here[wcslen(here) - 1] = 0;   /* no trailing backslash: it would escape the quote */
     char hex[65] = "";
     logw(L"downloading the port from %ls", PORT_URL);
-    if (!port_download(zip, hex)) { DeleteFileW(zip); port_manual(L"The download failed. Check your internet connection."); return 0; }
+    if (!download(PORT_URL, zip, hex)) { DeleteFileW(zip); port_manual(L"The download failed. Check your internet connection."); return 0; }
     if (strcmp(hex, k_port_sha256)) {
         logw(L"port download hash %hs, expected %hs", hex, k_port_sha256);
         DeleteFileW(zip);
@@ -298,6 +427,8 @@ static int install_port(void) {
     return 1;
 }
 
+#include "update.inc"
+
 int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmd, int show) {
     (void)inst; (void)prev; (void)show;
     GetModuleFileNameW(NULL, g_dir, MAX_PATH);
@@ -308,6 +439,30 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmd, int show) {
     swprintf(dll, MAX_PATH, L"%lsKirbyAccess\\KirbyAccess.dll", g_dir);
     swprintf(logp, MAX_PATH, L"%lsKirbyAccess\\launch.log", g_dir);
     g_log = _wfopen(logp, L"a");
+
+    /* the launcher's own arguments come out; the rest goes to the game */
+    static wchar_t args[4 * MAX_PATH];
+    wcsncpy(args, cmd ? cmd : L"", sizeof args / sizeof *args - 1);
+    wchar_t api[512] = L"", fake[64] = L"";
+    int updated = wcsstr(args, L"--updated") != NULL, only = wcsstr(args, L"--update-only") != NULL;
+    int api_arg = wcsstr(args, L"--update-api") != NULL;
+    strip_arg(args, L"--updated", 0, NULL, 0);
+    strip_arg(args, L"--update-only", 0, NULL, 0);
+    strip_arg(args, L"--update-api", 1, api, 512);
+    strip_arg(args, L"--fake-version", 1, fake, 64);
+    cmd = args;
+    update_cleanup();
+    if (!updated && (api_arg || !wcsstr(args, L"--user-dir"))) {
+        char cur[64];
+        if (fake[0]) WideCharToMultiByte(CP_UTF8, 0, fake, -1, cur, sizeof cur, NULL, NULL); else strcpy(cur, MOD_VERSION);
+        /* the new launcher gets the same arguments, minus the pretend version */
+        static wchar_t pass[5 * MAX_PATH];
+        swprintf(pass, sizeof pass / sizeof *pass, L"%ls%ls%ls%ls%ls", args, only ? L" --update-only" : L"",
+                 api_arg ? L" --update-api \"" : L"", api_arg ? api : L"", api_arg ? L"\"" : L"");
+        if (update_check(api_arg ? api : UPDATE_API, cur, pass)) { if (g_log) fclose(g_log); return 0; }
+    }
+    if (only) { logw(L"update-only run: not starting the game"); if (g_log) fclose(g_log); return 0; }
+
     if (GetFileAttributesW(exe) == INVALID_FILE_ATTRIBUTES && !install_port()) return 1;
     if (GetFileAttributesW(dll) == INVALID_FILE_ATTRIBUTES) { fail(L"KirbyAccess\\KirbyAccess.dll is missing."); return 1; }
 
